@@ -320,10 +320,11 @@ Les éléments entre crochets sont appelés des attributs. Ils définissent des 
 
 Vous pouvez créé vos propres attributs, mais les attributs par défaut définissent des comportements :
 - `[ApiController]` définit les comportements par défaut d'une API REST
-- `[Route("[controller]")]` définit la route pour accéder à un controller; le `[controller]` désigne le nom de la classe en tant que endpoint 
-- `[HttpGet(Name = "GetWeatherForecast")]` définit la méthode la méthode attendu
+- `[Route("[controller]")]` définit la route pour accéder à un controller; le `[controller]` désigne le nom de la classe en tant que endpoint
+- Ajouter `[Route("{id}")]`  sur une méthode va définir un endpoint `[controller]/{id}`
+- `[HttpGet(Name = "GetWeatherForecast")]` définit le nom de la méthode attendu
 
-Donc pour accéder à cette API, nous utiliserons `GET localhost:53000/WeatherForecast/GetWeatherForecast`. Il existe même des attributs pour l'authentification.
+Donc pour accéder à cette API, nous utiliserons `GET localhost:53000/WeatherForecast`. Il existe même des attributs pour l'authentification.
 
 Après l'explication, place à la pratique.
 
