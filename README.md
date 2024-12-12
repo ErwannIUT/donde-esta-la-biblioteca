@@ -44,6 +44,7 @@ Si vous voulez la ref du **Donde esta la Biblioteca** : https://www.youtube.com/
   - Nom de classe abstraite par un **A**
   - Pensez à compiler régulièrement : si ça ne compile pas, c'est un 0
 
+N'hésitez pas à me consulter à chaque étape pour vous assurez que vous avez bien réalisé chaque action.
 
 ## TODO
 
@@ -67,7 +68,7 @@ Veillez à bien être en vue Solution et d'avoir votre projet chargé.
 
 Créez une méthode Main dans le `Program.cs` grâce aux recommandations VS `Alt + Entrée` à la l'intérieur du fichier.
 
-Créez une classe `Livre` qui contiendra uniquement un `string Name` et un `string Type`. 
+Créez une classe `Book` qui contiendra uniquement un `string Name` et un `string Type`. 
 
 Dans cette méthode, vous allez faire créer une liste de livre que vous allez alimenter avec quelques éléments dont au moins un livre de type `Aventure`. Libre à vous de mettre ce que vous souhaitez dans celle-ci.
 
@@ -81,7 +82,7 @@ Vous allez ensuite boucler sur celle-ci et afficher dans la console les différe
 LINQ (prononcé line-cue) est langage d'interrogation pour vos tableaux en .NET.
 
 Celui vos permettra de filtrer vos tableaux et d'ajouter une granularité supplémentaire.
-Il est possible d'utiliser LINQ via le langage correspondant (comme du SQL) ou d'utiliser des méthodes sur vos listes (Ex : `_voitures.Where(x => x.Price < 2000)`).
+Il est possible d'utiliser LINQ via le langage correspondant (comme du SQL) ou d'utiliser des méthodes sur vos listes (Ex : `_cars.Where(x => x.Price < 2000)`).
 
 Dans ce contexte, on utilisera la version avec des méthodes mais sachez que les deux sont possibles.
 
@@ -91,19 +92,51 @@ Pour plus d'informations : [LINQ - Microsoft](https://learn.microsoft.com/fr-fr/
 
 ⚠️ Testez votre code et pensez à commit.
 
-
-### Etape 2 : Préparer son architecture
+### Etape 4.1 : Préparer son architecture
 ---
 
-Et mettre en place son architecture de projets en ajoutant via VS des *Librairies de classes* :
-- `BusinessLayer` : Couche métier; on va y mettre toute la logique métier
-- `Services` : Couche services intermédiaire; va permettre d'orchestrer les besoins et de relier d'autres couches entre elles
+ Mettez en place votre architecture de projets en ajoutant via Visual Studio des projets de type *Librairies de classes* :
 - `BusinessObjects` : Couche contenant vos objets métier (objets de base de données ou de travail)
 - `DataAccessLayer` : Couche permettant l'accès aux données; on y retrouvera notamment les repository
 
-PS: Votre projet créer avec la solution fait office de couche d'entrée à l'application et configuration
+Maintenant passons à l'implémentation de notre architecture.
 
-Ajouter dans le `Program.cs` la méthode :
+1. Dans votre projet `BusinessObjects`, créez un dossier `Entity` et `Enum`, puis dans ce dossier créez les objets correspondants aux tables du fichier `LibraryInit.sql`.
+
+Déplacez-y votre classe `Livre` que vous compléterez et changez votre `string Type` en enum de `TypeLivre Type`. Pas besoin de créer un fichier pour la table de `Stock`.
+
+Dans le cadre d'une relation `OneToMany` (1..\*) ou `ManyToMany` (\*), le **Many** se manifeste sous la forme d'une liste (Ex : `IEnumerable<ClassA>`) et le **One** sous la forme d'un objet simple (Ex : `ClassA`).
+
+2. Dans votre projet `DataAccessLayer`, créez un dossier `Repository`, puis dans ce dossier une classe repository pour chaque entité (ex : `BookRepository`)
+
+Vous y créerez les méthodes `GetAll()` qui retournera un `IEnumerable<Book>` et `Get(int id)` qui retounera un `Book`, vous pouvez `return` des objets vides à ce stade.
+
+Répétez le même schéma pour chacune de vos entités.
+
+Pour le `BookRepository`, utilisez la liste que vous avez créé dans le `Main` et implémentez les méthodes `GetAll()` et `Get(int id)` et appelez ces méthodes dans votre `Main` et tentez d'afficher les livres d'aventure.
+
+**PI : Vous aurez besoin d'ajouter des références d'un projet à un autre pour permettre d'utiliser vos entités à l'extérieur de leur projet respectif.**
+
+⚠️ Testez votre code et pensez à commit.
+
+
+### Etape 4.2 : Préparer son architecture
+---
+
+ Mettez en place votre architecture de projets en ajoutant via Visual Studio des projets de type *Librairies de classes* :
+- `BusinessLayer` : Couche métier; on va y mettre toute la logique métier
+- `Services` : Couche services intermédiaire; va permettre d'orchestrer les besoins et de relier d'autres couches entre elles
+
+
+3. Dans votre projet `BusinessLayer`, créez un dossier `Catalog`, puis dans ce dossier une classe `CatalogManager` qui contiendra les méthodes `DisplayCatalog()`, `DisplayCatalog(Type type)` et `FindBook(int id)` qui utiliseront les Repository
+
+4. Dans votre projet `Services`, créez un dossier `Services`, puis dans ce dossier une classe `CatalogService` qui contiendra les méthodes `ShowCatalog()`, `ShowCatalog(Type type)` et `FindBook(int id)` qui utiliseront le `CatalogManger`
+
+
+### Etape 5 : Injection de dépendance
+---
+
+Ajoutez dans le `Program.cs` la méthode :
 
 ```cs
     private static IHost CreateHostBuilder(IConfigurationBuilder configuration)
@@ -116,37 +149,6 @@ Ajouter dans le `Program.cs` la méthode :
             .Build();
     }
 ```
-
-⚠️ Testez votre code et pensez à commit.
-
-### Etape 2 : Préparer son architecture
----
-
-Maintenant passons à l'implémentation de notre architecture.
-
-1. Dans votre projet `BusinessObjects`, créez un dossier `Entity`, puis dans ce dossier créez les objets correspondants aux tables du fichier `LibraryInit.sql`
-
-Pour le type des types de livres, pensez à créer un `enum`. Pas besoin de créer un fichier pour la table de `Stock`.
-
-Dans le cadre d'une relation `OneToMany` (1..\*) ou `ManyToMany` (\*), le **Many** se manifeste sous la forme d'une liste (Ex : `IEnumerable<ClassA>`) et le **One** sous la forme d'un objet simple (Ex : `ClassA`).
-
-2. Dans votre projet `DataAccessLayer`, créez un dossier `Repository`, puis dans ce dossier une classe `BookRepository`
-
-Vous y créerez les méthodes `GetAll()` qui retournera un `IEnumerable<Book>` et `Get(int id)` qui retounera un `Book`, vous pouvez `return` des objets vides à ce stade.
-
-PI : Vous aurez besoin d'ajouter des références d'un projet à un autre pour permettre d'utiliser vos entités à l'extérieur de leur projet respectif.
-
-Répétez le même schéma pour chacune de vos entités.
-
-3. Dans votre projet `BusinessLayer`, créez un dossier `Catalog`, puis dans ce dossier une classe `CatalogManager` qui contiendra les méthodes `DisplayCatalog()`, `DisplayCatalog(Type type)` et `FindBook(int id)` qui utiliseront les Repository
-
-4. Dans votre projet `Services`, créez un dossier `Services`, puis dans ce dossier une classe `CatalogService` qui contiendra les méthodes `ShowCatalog()`, `ShowCatalog(Type type)` et `FindBook(int id)` qui utiliseront le `CatalogManger`
-
-⚠️ Testez votre code et pensez à commit.
-
-
-### Etape 4 : Injection de dépendance
----
 
 Il s'agit ici d'un concept extrêmement important lors du développement d'une application aujourd'hui.
 On ne développe non plus à partir de classe concrète mais à partir des interfaces afin de réduire le couplage de vos applications à l'implémentation.
