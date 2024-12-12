@@ -113,7 +113,7 @@ Vous y créerez les méthodes `GetAll()` qui retournera un `IEnumerable<Book>` e
 
 Répétez le même schéma pour chacune de vos entités.
 
-Pour le `BookRepository`, utilisez la liste que vous avez créé dans le `Main` et implémentez les méthodes `GetAll()` et `Get(int id)` et appelez ces méthodes dans votre `Main` et tentez d'afficher les livres d'aventure.
+Pour le `BookRepository`, utilisez la liste que vous avez créé dans le `Main` puis implémentez les méthodes `GetAll()` et `Get(int id)`, appelez ces méthodes dans votre `Main` et finalement tentez d'afficher les livres d'aventure.
 
 **PI : Vous aurez besoin d'ajouter des références d'un projet à un autre pour permettre d'utiliser vos entités à l'extérieur de leur projet respectif.**
 
@@ -124,13 +124,11 @@ Pour le `BookRepository`, utilisez la liste que vous avez créé dans le `Main` 
 ---
 
  Mettez en place votre architecture de projets en ajoutant via Visual Studio des projets de type *Librairies de classes* :
-- `BusinessLayer` : Couche métier; on va y mettre toute la logique métier
 - `Services` : Couche services intermédiaire; va permettre d'orchestrer les besoins et de relier d'autres couches entre elles
 
+4. Dans votre projet `Services`, créez un dossier `Services`, puis dans ce dossier une classe `CatalogManager` qui contiendra les méthodes `GetCatalog()`, `GetCatalog(Type type)` et `FindBook(int id)` qui utiliseront le `CatalogManger`
 
-3. Dans votre projet `BusinessLayer`, créez un dossier `Catalog`, puis dans ce dossier une classe `CatalogManager` qui contiendra les méthodes `DisplayCatalog()`, `DisplayCatalog(Type type)` et `FindBook(int id)` qui utiliseront les Repository
-
-4. Dans votre projet `Services`, créez un dossier `Services`, puis dans ce dossier une classe `CatalogService` qui contiendra les méthodes `ShowCatalog()`, `ShowCatalog(Type type)` et `FindBook(int id)` qui utiliseront le `CatalogManger`
+Remplacez les méthodes de votre `Main` par les méthodes nouvellement créées.
 
 
 ### Etape 5 : Injection de dépendance
@@ -220,11 +218,13 @@ Et comme vous le constatez, je n'ai à aucun moment instancier la classe de dép
 
 On peut même injecter un Singleton ! Renseignez vous sur la documentation pour connaître les cycles de vie des objets injecté. 
 
-Pour réaliser de l'injection de dépendance, extrayez une interface de vos classes concrètes ayant de la logique et instanciés ailleurs dans votre code (Ex : Services...)
+Pour réaliser de l'injection de dépendance :
+- Extrayez une interface de vos classes concrètes ayant de la logique et instanciés ailleurs dans votre code (Ex : Services...)
+- Pour vos repository, on fera un peu différemment. Vous allez créer une seule interface `IGenericRepository<T>` qui prendra en paramètre un type générique. Aidez-vous de la documentation
+- Injectez vos dépendances dans la configuration de vos services de votre `Program.cs`
+- Utilisez ces classes injectéss en retirant les appels inutiles à vos classes concrètes 
 
-Pour vos repository, on fera un peu différemment. Vous allez créer une seule interface `IGenericRepository` qui prendra en paramètre un type générique. Aidez-vous de la documentation.
-
-Pour récupérer votre classe correspondante dans le `Main` et tester en reprenant l'exemple du `IApiCaller` :
+Pour récupérer votre Service dans le `Main` et tester en reprenant l'exemple du `IApiCaller` :
 
 ```cs
   IApiCaller apiCaller = host.Services.GetRequiredService<IApiCaller>();
