@@ -105,6 +105,8 @@ Maintenant passons à l'implémentation de notre architecture.
 
 Déplacez-y votre classe `Livre` que vous compléterez et changez votre `string Type` en enum de `TypeLivre Type`. Pas besoin de créer un fichier pour la table de `Stock`.
 
+Faites en sorte que toutes entités héritent d'une interface `IEntity`.
+
 Dans le cadre d'une relation `OneToMany` (1..\*) ou `ManyToMany` (\*), le **Many** se manifeste sous la forme d'une liste (Ex : `IEnumerable<ClassA>`) et le **One** sous la forme d'un objet simple (Ex : `ClassA`).
 
 2. Dans votre projet `DataAccessLayer`, créez un dossier `Repository`, puis dans ce dossier une classe repository pour chaque entité (ex : `BookRepository`)
@@ -113,7 +115,7 @@ Vous y créerez les méthodes `GetAll()` qui retournera un `IEnumerable<Book>` e
 
 Répétez le même schéma pour chacune de vos entités.
 
-Pour le `BookRepository`, utilisez la liste que vous avez créé dans le `Main` puis implémentez les méthodes `GetAll()` et `Get(int id)`, appelez ces méthodes dans votre `Main` et finalement tentez d'afficher les livres d'aventure.
+Pour le `BookRepository`, utilisez la liste que vous avez créé dans le `Main` puis implémentez les méthodes `Book GetAll()` et `Book Get(int id)`, appelez ces méthodes dans votre `Main` et finalement tentez d'afficher les livres d'aventure.
 
 **PI : Vous aurez besoin d'ajouter des références d'un projet à un autre pour permettre d'utiliser vos entités à l'extérieur de leur projet respectif.**
 
@@ -220,11 +222,11 @@ On peut même injecter un Singleton ! Renseignez vous sur la documentation pour 
 
 Pour réaliser de l'injection de dépendance :
 - Extrayez une interface de vos classes concrètes ayant de la logique et instanciés ailleurs dans votre code (Ex : Services...)
-- Pour vos repository, on fera un peu différemment. Vous allez créer une seule interface `IGenericRepository<T>` qui prendra en paramètre un type générique. Aidez-vous de la documentation
+- Pour vos repository, on fera un peu différemment. Vous allez créer une seule interface `IGenericRepository<T>` qui prendra en paramètre un type générique `T` qui sera une `IEntity` et qui vous servira pour vos types de retours
 - Injectez vos dépendances dans la configuration de vos services de votre `Program.cs`
 - Utilisez ces classes injectéss en retirant les appels inutiles à vos classes concrètes 
 
-Pour récupérer votre Service dans le `Main` et tester en reprenant l'exemple du `IApiCaller` :
+Récupérez votre Service dans le `Main` et testez en reprenant l'exemple du `IApiCaller` :
 
 ```cs
   IApiCaller apiCaller = host.Services.GetRequiredService<IApiCaller>();
@@ -255,21 +257,29 @@ Pensez à l'injecter, pour une fois on utilisera une classe concrète. Vous aure
 
 Dans vos respositories, utilisez le `LibraryContext` injecté pour récupérer le contenu de la base.
 
-Pour plus d'informations : [EntityFramework - Microsoft](https://learn.microsoft.com/fr-fr/ef/core/)
+Ajoutez une méthode `IEntity Add(IEntity)` dans `IGenericRepository`. Compilez et debuggez.
 
-Pour consulter votre base de données, je vous conseille l'utilisation de [DBeaver](https://dbeaver.io/) qui est vraiment utile quand vous avez plusieurs SGBD différent à gérer.
+Vous réalisez à quel point c'est fastidieux de tout changer à la fois.
+
+Maintenant créez une classe concrète `GenericRepository<T>` qui doit remplacer tous vos repositories existants et remplacez les injections.
+
+Supprimez vos anciens repositories.
+
+Pour plus d'informations : 
+- [EntityFramework - Microsoft](https://learn.microsoft.com/fr-fr/ef/core/)
+- [DBeaver](https://dbeaver.io/) qui est vraiment utile quand vous avez plusieurs SGBD différents à gérer.
 
 ⚠️ Testez votre code et pensez à commit.
 
 ### Etape 6 : TU
 ---
 
-Créez un dossier `Tests` et puis un nouveau projet `Services.Test`.
+Créez un dossier `Tests` à la racine de votre solution et un nouveau projet `Services.Test` dans ce dossier.
 Créez une classe `CatalogServiceTest`.
 
-Implémentez un test unitaire sur chaque méthode de votre `CatalogService` en pensant à Mock le retour de votre `CatalogManager`pour bien tester unitairement votre méthode.
+Implémentez un test unitaire sur chaque méthode de votre `CatalogService` en pensant à Mock le retour de votre `Repository` pour bien tester unitairement votre méthode.
 
-Pour plus d'informations : [TU avec C# - Microsoft](https://learn.microsoft.com/fr-fr/dotnet/core/testing/unit-testing-with-mstest)
+Pour plus d'informations : [TU avec C# - Microsoft](https://learn.microsoft.com/fr-fr/dotnet/core/testing/unit-testing-with-dotnet-test)
 
 ⚠️ Testez votre code et pensez à commit.
 
@@ -367,7 +377,11 @@ Créez un fichier `BookController` qui va commprendre les méthodes *GET* suivan
 - books
 - book/{id}
 - books/{type}
-- book/topRatedBook
+- book/add
+- book/topRatedBook (TODO)
+- book/delete (TODO)
+
+Implémentez la méthode manquantes.
 
 Pour tester votre API, installez [Postman](https://www.postman.com/).
 
@@ -398,6 +412,6 @@ Pour plus d'informations : [Tutoriel ASP.NET Core Web API- Microsoft](https://le
 - Mail : erwann.fiolet@gmail.com
 - Discord : byabyakar
 
-Pour m'envoyer votre TP, envoyer moi un mail avec pour objet : **[IUT] Nom Prénom 1 - Nom Prénom 2**
+Pour m'envoyer votre TP, envoyer moi un mail avec pour objet : **[IUT] Nom Prénom 1 - Nom Prénom 2** en me précisant dans le contenu la partie à laquelle vous vous êtes arrêtés.
 
 Ajoutez-y un zip de votre solution que vous aurez préalablement nettoyer `Générer > Nettoyer la solution`
