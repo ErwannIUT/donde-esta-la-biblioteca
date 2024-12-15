@@ -82,7 +82,7 @@ Vous allez ensuite boucler sur celle-ci et afficher dans la console les différe
 LINQ (prononcé line-cue) est langage d'interrogation pour vos tableaux en .NET.
 
 Celui vos permettra de filtrer vos tableaux et d'ajouter une granularité supplémentaire.
-Il est possible d'utiliser LINQ via le langage correspondant (comme du SQL) ou d'utiliser des méthodes sur vos listes (Ex : `_cars.Where(x => x.Price < 2000)`).
+Il est possible d'utiliser LINQ via le langage correspondant (comme du SQL) ou d'utiliser des méthodes sur vos listes.
 
 Dans ce contexte, on utilisera la version avec des méthodes mais sachez que les deux sont possibles.
 
