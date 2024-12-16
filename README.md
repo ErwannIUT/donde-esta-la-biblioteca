@@ -239,7 +239,7 @@ Pour plus d'informations :
 
 ⚠️ Testez votre code et pensez à commit.
 
-### Etape 5 : EntityFramework
+### Etape 6 : EntityFramework
 ---
 
 Avec l'aide de la base de données SQLite fournit en annexe, vous allez implémenter l'ORM **EntityFramework**.
@@ -271,7 +271,7 @@ Pour plus d'informations :
 
 ⚠️ Testez votre code et pensez à commit.
 
-### Etape 6 : TU
+### Etape 7 : TU
 ---
 
 Créez un dossier `Tests` à la racine de votre solution et un nouveau projet `Services.Test` dans ce dossier.
@@ -283,7 +283,7 @@ Pour plus d'informations : [TU avec C# - Microsoft](https://learn.microsoft.com/
 
 ⚠️ Testez votre code et pensez à commit.
 
-### Etape 7 : API
+### Etape 8 : API
 ---
 
 On va maintenant mettre en place une API. Pour rappel, une API est une interface logiciel sur laquel vous pourrez vous connecter et récupérer des informations via requête HTTP. Elle vous renverra un résultat sous la forme d'un JSON.
