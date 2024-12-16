@@ -95,7 +95,7 @@ Pour plus d'informations : [LINQ - Microsoft](https://learn.microsoft.com/fr-fr/
 ### Etape 4.1 : Préparer son architecture
 ---
 
- Mettez en place votre architecture de projets en ajoutant via Visual Studio des projets de type *Bibliothèque de classes* :
+ Mettez en place votre architecture de projets en ajoutant via Visual Studio des projets de type **Bibliothèque de classes** :
 - `BusinessObjects` : Couche contenant vos objets métier (objets de base de données ou de travail)
 - `DataAccessLayer` : Couche permettant l'accès aux données; on y retrouvera notamment les repository
 
@@ -125,7 +125,7 @@ Pour le `BookRepository`, utilisez la liste que vous avez créé dans le `Main` 
 ### Etape 4.2 : Préparer son architecture
 ---
 
- Mettez en place votre architecture de projets en ajoutant via Visual Studio des projets de type *Librairies de classes* :
+ Mettez en place votre architecture de projets en ajoutant via Visual Studio des projets de type **Bibliothèque de classes** :
 - `Services` : Couche services intermédiaire; va permettre d'orchestrer les besoins et de relier d'autres couches entre elles
 
 4. Dans votre projet `Services`, créez un dossier `Services`, puis dans ce dossier une classe `CatalogManager` qui contiendra les méthodes `GetCatalog()`, `GetCatalog(Type type)` et `FindBook(int id)` qui utiliseront le `CatalogManger`.
