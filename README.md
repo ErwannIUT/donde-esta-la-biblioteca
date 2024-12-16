@@ -37,7 +37,7 @@ Si vous voulez la ref du **Donde esta la Biblioteca** : https://www.youtube.com/
 - Privilégier les interfaces aux classes concrètes (normalement en suivant bien le projet ça devrait être facile)
 - Nommage :
   - "Singulier" pour un objet simple et "Pluriel" pour une liste 
-  - **PascalCase** : Pour les noms de classe et interface...
+  - **PascalCase** : Pour les noms de classe, interface et propriétés
   - **camelCase** : Pour les variables
   - **_camelCase** : Pour les variables déclaré au niveau de la classe
   - Nom d'interface commençant par un **I**
