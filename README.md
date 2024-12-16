@@ -128,7 +128,7 @@ Pour le `BookRepository`, utilisez la liste que vous avez créé dans le `Main` 
  Mettez en place votre architecture de projets en ajoutant via Visual Studio des projets de type **Bibliothèque de classes** :
 - `Services` : Couche services intermédiaire; va permettre d'orchestrer les besoins et de relier d'autres couches entre elles
 
-4. Dans votre projet `Services`, créez un dossier `Services`, puis dans ce dossier une classe `CatalogManager` qui contiendra les méthodes `GetCatalog()`, `GetCatalog(Type type)` et `FindBook(int id)` qui utiliseront le `CatalogManger`.
+4. Dans votre projet `Services`, créez un dossier `Services`, puis dans ce dossier une classe `CatalogManager` qui contiendra les méthodes `IEnumerable<Book> GetCatalog()`, `IEnumerable<Book> GetCatalog(Type type)` et `Book FindBook(int id)` qui utiliseront le `CatalogManager`.
 
 Ces méthodes vont utiliser les Repository que vous avez créé et remplacez les méthodes de votre `Main` par les méthodes nouvellement créées dans votre `CatalogManager`.
 
