@@ -95,7 +95,7 @@ Pour plus d'informations : [LINQ - Microsoft](https://learn.microsoft.com/fr-fr/
 ### Etape 4.1 : Préparer son architecture
 ---
 
- Mettez en place votre architecture de projets en ajoutant via Visual Studio des projets de type *Librairies de classes* :
+ Mettez en place votre architecture de projets en ajoutant via Visual Studio des projets de type *Bibliothèque de classes* :
 - `BusinessObjects` : Couche contenant vos objets métier (objets de base de données ou de travail)
 - `DataAccessLayer` : Couche permettant l'accès aux données; on y retrouvera notamment les repository
 
