@@ -101,7 +101,7 @@ Pour plus d'informations : [LINQ - Microsoft](https://learn.microsoft.com/fr-fr/
 
 Maintenant passons à l'implémentation de notre architecture.
 
-1. Dans votre projet `BusinessObjects`, créez un dossier `Entity` et `Enum`, puis dans ce dossier créez les objets correspondants aux tables du fichier `LibraryInit.sql`.
+1. Dans votre projet `BusinessObjects`, créez un dossier `Entity` et `Enum`, puis dans ce dossier `Entity`, créez les objets correspondants aux tables du fichier `LibraryInit.sql`.
 
 Déplacez-y votre classe `Livre` que vous compléterez et changez votre `string Type` en enum de `TypeLivre Type`. Pas besoin de créer un fichier pour la table de `Stock`.
 
