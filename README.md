@@ -383,12 +383,33 @@ Créez un fichier `BookController` qui va commprendre les méthodes *GET* suivan
 
 Implémentez la méthode manquantes.
 
+Faîtes en sortes d'afficher l'`Author` correspondant à votre `Book`.
+
 Pour tester votre API, installez [Postman](https://www.postman.com/).
 
 Pour plus d'informations : [Tutoriel ASP.NET Core Web API- Microsoft](https://learn.microsoft.com/fr-fr/aspnet/core/tutorials/first-web-api?view=aspnetcore-8.0&tabs=visual-studio)
 
 ⚠️ Testez votre code et pensez à commit.
 
+### Etape 9 : Limité l'accès au données
+---
+
+Dans votre projet `BusinessObject`, créez un dossier `DataTransfertObject`.
+Dans celui-ci, vous pouvez créé un `BookDto`. 
+
+Un DTO est une version de l'objet qui sera à destination de l'extérieur de votre application, cela peut être utile pour limité les données accessibles au client de votre API.
+
+Dans votre `BookDto`, reprenez les éléments de votre `Book` en retirant le `Rate`.
+
+Faites en sortes que les `Book`s fournit par votre `CatalogManager` soit converti en `BookDto` au niveau de vos `Controller`s.
+
+Chacun de vos `Controller`s doivent utiliser et renvoyer des `BookDto`.
+
+### Etape 10 : WIP
+
+
+
+⚠️ Testez votre code et pensez à commit.
 
 ### Raccourcis utiles 
 ---
