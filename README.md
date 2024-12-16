@@ -405,7 +405,11 @@ Faites en sortes que les `Book`s fournit par votre `CatalogManager` soit convert
 
 Chacun de vos `Controller`s doivent utiliser et renvoyer des `BookDto`.
 
+⚠️ Testez votre code et pensez à commit.
+
+
 ### Etape 10 : WIP
+---
 
 
 
