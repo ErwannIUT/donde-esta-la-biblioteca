@@ -408,12 +408,19 @@ Chacun de vos `Controller`s doivent utiliser et renvoyer des `BookDto`.
 ⚠️ Testez votre code et pensez à commit.
 
 
-### Etape 10 : WIP
+### Etape 10 : Factory
 ---
 
+Implémentez le design pattern factory et appliquez le aux `IGenericRepository<T>`.
 
+Créez une classe et une interface `RepositoryFactory` qui aura une méthode `IGenericRepository<T> CreateRepository()` où vous vérifierez le type générique `T` pour renvoyer l'interface correspondante.
+
+Exemple : Si `T` est de type `Book`, vous retournerez un `IGenericRepository`.
+
+Dans votre service, vous utiliserez la factory et sa méthode `CreateRepository()` pour renvoyer le répository correspondant.
 
 ⚠️ Testez votre code et pensez à commit.
+
 
 ### Raccourcis utiles 
 ---
