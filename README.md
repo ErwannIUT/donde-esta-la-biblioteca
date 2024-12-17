@@ -244,6 +244,8 @@ Pour plus d'informations :
 
 Avec l'aide de la base de données SQLite fournit en annexe, vous allez implémenter l'ORM **EntityFramework**.
 
+Vous aurez besoin d'un package SQLite pour poursuivre, je vous laisse chercher.
+
 Le but ici est d'au lieu de renvoyer des listes vides au niveau de vos `Repositories`, de renvoyer les infos qui sont stockées en base de données.
 
 Dans votre `DataAccessLayer`, créez un dossier `Contexts` et un fichier `LibraryContext` qui implémentera la classe `DbContext`, servez-vous de la documentation pour remplir votre DbContext.  
@@ -254,6 +256,8 @@ Pensez à l'injecter, pour une fois on utilisera une classe concrète. Vous aure
   services.AddDbContext<LibraryContext>(options =>
     options.UseSqlite("Data Source={path};"));
 ```
+
+Vous pouvez mettre un chemin absolu pour le `{path}`.
 
 Dans vos respositories, utilisez le `LibraryContext` injecté pour récupérer le contenu de la base.
 
