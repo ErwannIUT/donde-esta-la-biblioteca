@@ -139,7 +139,7 @@ Ces méthodes vont utiliser les Repository que vous avez créé et remplacez les
 Ajoutez dans le `Program.cs` la méthode :
 
 ```cs
-    private static IHost CreateHostBuilder(IConfigurationBuilder configuration)
+    private static IHost CreateHostBuilder()
     {
         return Host.CreateDefaultBuilder()
             .ConfigureServices(services =>
