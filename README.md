@@ -103,7 +103,7 @@ Maintenant passons à l'implémentation de notre architecture.
 
 1. Dans votre projet `BusinessObjects`, créez un dossier `Entity` et `Enum`, puis dans ce dossier `Entity`, créez les objets correspondants aux tables du fichier `LibraryInit.sql`.
 
-Déplacez-y votre classe `Livre` que vous compléterez et changez votre `string Type` en enum de `TypeLivre Type`. Pas besoin de créer un fichier pour la table de `Stock`.
+Déplacez-y votre classe `Livre` que vous compléterez et changez votre `string Type` en enum de `TypeBook Type`. Pas besoin de créer un fichier pour la table de `Stock`.
 
 Faites en sorte que toutes entités héritent d'une interface `IEntity`.
 
