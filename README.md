@@ -105,7 +105,7 @@ Maintenant passons à l'implémentation de notre architecture.
 
 Déplacez-y votre classe `Livre` que vous compléterez et changez votre `string Type` en enum de `TypeBook Type`. Pas besoin de créer un fichier pour la table de `Stock`.
 
-Faites en sorte que toutes entités héritent d'une interface `IEntity`.
+Faites en sorte que toutes entités héritent d'une interface `IEntity` qui contiendra une propriété `int Id`.
 
 Dans le cadre d'une relation `OneToMany` (1..\*) ou `ManyToMany` (\*), le **Many** se manifeste sous la forme d'une liste (Ex : `IEnumerable<ClassA>`) et le **One** sous la forme d'un objet simple (Ex : `ClassA`).
 
