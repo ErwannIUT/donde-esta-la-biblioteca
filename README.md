@@ -257,7 +257,7 @@ Pensez à l'injecter, pour une fois on utilisera une classe concrète. Vous aure
   services.AddDbContext<LibraryContext>();
 
 \\ Dans la configuration de votre LibraryContext 
-  options.UseSqlite("Data Source={path};")
+  options.UseSqlite("Data Source={path};");
 ```
 
 Vous pouvez construire un chemin absolu avec l'aide de la classe `Path`. Faites en sorte que le fichier `.db` soit copié à la compilation.
