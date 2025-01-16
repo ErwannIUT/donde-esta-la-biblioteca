@@ -265,7 +265,7 @@ Ajoutez une méthode `IEntity Add(IEntity)` dans `IGenericRepository`. Compilez 
 
 Vous réalisez à quel point c'est fastidieux de tout changer à la fois.
 
-Maintenant créez une classe concrète `GenericRepository<T>` qui doit remplacer tous vos repositories existants et remplacez les injections.
+(Refacto en cours) Maintenant créez une classe concrète `GenericRepository<T>` qui doit remplacer tous vos repositories existants et remplacez les injections.
 
 Supprimez vos anciens repositories.
 
