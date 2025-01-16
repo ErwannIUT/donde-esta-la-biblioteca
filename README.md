@@ -257,7 +257,7 @@ Pensez à l'injecter, pour une fois on utilisera une classe concrète. Vous aure
     options.UseSqlite("Data Source={path};"));
 ```
 
-Vous pouvez mettre un chemin absolu pour le `{path}`.
+Vous pouvez construire un chemin absolu avec l'aide de la classe `Path`. Faites en sorte que le fichier `.db` soit copié à la compilation.
 
 Dans vos respositories, utilisez le `LibraryContext` injecté pour récupérer le contenu de la base.
 
