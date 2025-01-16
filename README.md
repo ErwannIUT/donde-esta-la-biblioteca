@@ -253,8 +253,11 @@ Dans votre `DataAccessLayer`, créez un dossier `Contexts` et un fichier `Librar
 Pensez à l'injecter, pour une fois on utilisera une classe concrète. Vous aurez sûrement un autre Nuget à récupérer sur vos deux projets.
 
 ```cs
-  services.AddDbContext<LibraryContext>(options =>
-    options.UseSqlite("Data Source={path};"));
+\\ Dans la configuration du service
+  services.AddDbContext<LibraryContext>();
+
+\\ Dans la configuration de votre LibraryContext 
+  options.UseSqlite("Data Source={path};")
 ```
 
 Vous pouvez construire un chemin absolu avec l'aide de la classe `Path`. Faites en sorte que le fichier `.db` soit copié à la compilation.
