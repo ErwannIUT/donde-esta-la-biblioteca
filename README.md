@@ -18,7 +18,7 @@ Si vous voulez la ref du **Donde esta la Biblioteca** : https://www.youtube.com/
 
 - *Solution*
   - La racine de votre application .NET qui permet d'avoir la vision globale des projet
-  - Manifesté sous la forme d'un fichier **.sln**, c'est ce fichier qu'il faut ouvrir pour ouvrir votre espace de travail
+  - Manifestée sous la forme d'un fichier **.sln**, c'est ce fichier qu'il faut ouvrir pour ouvrir votre espace de travail
   - Va contenir un ou plusieurs projet
 - *Projet* :
   - Bloc de construction de l'application
@@ -29,7 +29,7 @@ Si vous voulez la ref du **Donde esta la Biblioteca** : https://www.youtube.com/
   - Permet d'intégrer des dll à votre projet pour étendre les fonctionnalités de votre code (AutoMapper, ORM...)
   - On peut l'ouvrir en faisant `Clic droit > Gestionnaire Nuget` en cliquant sur un projet ou la solution 
 
-### Critère de qualité
+## Critères de qualité
 
 - Commits réguliers, au moins à chaque étape
 - Indentation
@@ -37,7 +37,7 @@ Si vous voulez la ref du **Donde esta la Biblioteca** : https://www.youtube.com/
 - Privilégier les interfaces aux classes concrètes (normalement en suivant bien le projet ça devrait être facile)
 - Nommage :
   - "Singulier" pour un objet simple et "Pluriel" pour une liste 
-  - **PascalCase** : Pour les noms de classe, interface et propriétés
+  - **PascalCase** : Pour les noms de classes, interfaces et propriétés
   - **camelCase** : Pour les variables
   - **_camelCase** : Pour les variables déclaré au niveau de la classe
   - Nom d'interface commençant par un **I**
@@ -72,7 +72,7 @@ Créez une classe `Book` qui contiendra uniquement un `string Name` et un `strin
 
 Dans cette méthode, vous allez faire créer une liste de livre que vous allez alimenter avec quelques éléments dont au moins un livre de type `Aventure`. Libre à vous de mettre ce que vous souhaitez dans celle-ci.
 
-Vous allez ensuite boucler sur celle-ci et afficher dans la console les différents nom.
+Vous allez ensuite boucler sur celle-ci et afficher dans la console les différents noms.
 
 ⚠️ Testez votre code et pensez à commit.
 
@@ -130,7 +130,7 @@ Pour le `BookRepository`, utilisez la liste que vous avez créé dans le `Main` 
 
 4. Dans votre projet `Services`, créez un dossier `Services`, puis dans ce dossier une classe `CatalogManager` qui contiendra les méthodes `IEnumerable<Book> GetCatalog()`, `IEnumerable<Book> GetCatalog(Type type)` et `Book FindBook(int id)` qui utiliseront le `CatalogManager`.
 
-Ces méthodes vont utiliser les Repository que vous avez créé et remplacez les méthodes de votre `Main` par les méthodes nouvellement créées dans votre `CatalogManager`.
+Ces méthodes vont utiliser les Repository que vous avez créé. Remplacez les méthodes de votre `Main` par les méthodes nouvellement créées dans votre `CatalogManager`.
 
 
 ### Etape 5 : Injection de dépendance
@@ -151,20 +151,20 @@ Ajoutez dans le `Program.cs` la méthode :
 ```
 
 Il s'agit ici d'un concept extrêmement important lors du développement d'une application aujourd'hui.
-On ne développe non plus à partir de classe concrète mais à partir des interfaces afin de réduire le couplage de vos applications à l'implémentation.
+On ne développe non plus à partir de classes concrètes mais à partir d'interfaces afin de réduire le couplage de vos applications à l'implémentation.
 
 L’injection de dépendances consiste, pour une classe, à déléguer la création de ses dépendances au code appelant qui va ensuite les injecter dans la classe correspondante. De ce fait, la création d’une instance est effectuée à l’extérieur de la classe dépendante et injectée dans celle-ci.
 
 ![Dependency Injection](/schemas/dependancy_injection.drawio.png)
 
-Par exemple, nous possèdons une classe concrète `ApiBCaller` que j'instancie à plusieurs endroits dans mon code. 
+Par exemple, nous possédons une classe concrète `ApiBCaller` que j'instancie à plusieurs endroits dans mon code. 
 Demain, on nous demande de la remplacer par un `ApiBCaller` car la source de doit changer.
 Plutôt que d'avoir à changer toutes références à notre classe concrète, nous allons mettre dans le constructeur notre interface qui vous donnera les fonctions disponibles.
 Et à plus haut niveau, nous lui injecterons la classe concrète qui correspondera à cette interface.
 
-A la compilation, la classe concrète correspondante est inconnu. Par contre, à l'exécution, cette classe est injecté à chaque qu'une référence à celle-ci est faite via l'interface.
+A la compilation, la classe concrète correspondante est inconnue. Par contre, à l'exécution, cette classe est injectée à chaque fois qu'une référence est faite à celle-ci via l'interface.
 
-De ce fait, lorsque que nous changerons l'implementation via une nouvelle classe, nous aurons juste besoin de changer la configuration correspondante.
+De ce fait, lorsque que nous changerons l'implémentation via une nouvelle classe, nous aurons juste besoin de changer la configuration correspondante.
 
 ```cs
   public interface IApiCaller {
@@ -216,12 +216,12 @@ En allant plus loin, on peut récupérer toutes vos classes de cette manière :
   // Et ainsi de suite
 ```
 
-Et comme vous le constatez, je n'ai à aucun moment instancier la classe de départ. (rappel : on instancie avec par exemple `new ClassA()`) 
+Et comme vous le constatez, je n'ai à aucun moment instancié la classe de départ. (rappel : on instancie avec le mot-clé `new`, par exemple `new ClassA()`) 
 
-On peut même injecter un Singleton ! Renseignez vous sur la documentation pour connaître les cycles de vie des objets injecté. 
+On peut même injecter un Singleton ! Renseignez-vous sur la documentation pour connaître les cycles de vie des objets injectés. 
 
 Pour réaliser de l'injection de dépendance :
-- Extrayez une interface de vos classes concrètes ayant de la logique et instanciés ailleurs dans votre code (Ex : Services...)
+- Extrayez une interface de vos classes concrètes ayant de la logique et instanciées ailleurs dans votre code (Ex : Services...)
 - Pour vos repository, on fera un peu différemment. Vous allez créer une seule interface `IGenericRepository<T>` qui prendra en paramètre un type générique `T` qui sera une `IEntity` et qui vous servira pour vos types de retours
 - Injectez vos dépendances dans la configuration de vos services de votre `Program.cs`
 - Utilisez ces classes injectéss en retirant les appels inutiles à vos classes concrètes 
@@ -242,7 +242,7 @@ Pour plus d'informations :
 ### Etape 6 : EntityFramework
 ---
 
-Avec l'aide de la base de données SQLite fournit en annexe, vous allez implémenter l'ORM **EntityFramework**.
+Avec l'aide de la base de données SQLite fournie en annexe, vous allez implémenter l'ORM **EntityFramework**.
 
 Vous aurez besoin d'un package SQLite pour poursuivre, je vous laisse chercher.
 
@@ -260,7 +260,7 @@ Pensez à l'injecter, pour une fois on utilisera une classe concrète. Vous aure
   options.UseSqlite("Data Source={path};");
 ```
 
-Vous pouvez construire un chemin absolu avec l'aide de la classe `Path`. Faites en sorte que le fichier `.db` soit copié à la compilation.
+Vous pouvez construire un chemin absolu avec l'aide de la classe `Path`. **Faites en sorte que le fichier `.db` soit copié à la compilation.**
 
 Dans vos respositories, utilisez le `LibraryContext` injecté pour récupérer le contenu de la base.
 
@@ -297,9 +297,9 @@ On va maintenant mettre en place une API. Pour rappel, une API est une interface
 
 Pour cela, vous allez créer un nouveau projet de type `ASP.NET Core WebAPI`, sans authentification que vous allez appeler `LibraryManager.Hosting`.
 
-Une fois créée, vous allez mettre ce projet en tant que projet de démarrage. 
+Une fois créé, vous allez mettre ce projet en tant que projet de démarrage. 
 
-Votre nouveau `Program.cs`, va ressembler à ça :
+Votre nouveau `Program.cs` va ressembler à ça :
 
 ```cs
 var builder = WebApplication.CreateBuilder(args);
@@ -337,7 +337,7 @@ Transformez votre fichier grâce aux recommandations VS `Alt + Entrée`.
 
 Ajoutez à votre builder les services de votre précédent `Program.cs`.
 
-Observez la classe créé :
+Observez la classe créée :
 
 ```cs
 using Microsoft.AspNetCore.Mvc;
@@ -380,7 +380,7 @@ Donc pour accéder à cette API, nous utiliserons `GET localhost:53000/WeatherFo
 
 Après l'explication, place à la pratique.
 
-Créez un fichier `BookController` qui va commprendre les méthodes *GET* suivants :
+Créez un fichier `BookController` qui va comprendre les méthodes *GET* suivants :
 - books
 - book/{id}
 - books/{type}
@@ -388,7 +388,7 @@ Créez un fichier `BookController` qui va commprendre les méthodes *GET* suivan
 - book/topRatedBook (TODO)
 - book/delete (TODO)
 
-Implémentez la méthode manquantes.
+Implémentez les méthodes manquantes.
 
 Faîtes en sortes d'afficher l'`Author` correspondant à votre `Book`.
 
@@ -398,17 +398,17 @@ Pour plus d'informations : [Tutoriel ASP.NET Core Web API- Microsoft](https://le
 
 ⚠️ Testez votre code et pensez à commit.
 
-### Etape 9 : Limité l'accès au données
+### Etape 9 : Limiter l'accès aux données
 ---
 
 Dans votre projet `BusinessObject`, créez un dossier `DataTransfertObject`.
-Dans celui-ci, vous pouvez créé un `BookDto`. 
+Dans celui-ci, vous pouvez créer un `BookDto`. 
 
-Un DTO est une version de l'objet qui sera à destination de l'extérieur de votre application, cela peut être utile pour limité les données accessibles au client de votre API.
+Un DTO est une version de l'objet qui sera à destination de l'extérieur de votre application, cela peut être utile pour limiter les données accessibles aux clients de votre API.
 
 Dans votre `BookDto`, reprenez les éléments de votre `Book` en retirant le `Rate`.
 
-Faites en sortes que les `Book`s fournit par votre `CatalogManager` soit converti en `BookDto` au niveau de vos `Controller`s.
+Faites en sorte que les `Book`s fournis par votre `CatalogManager` soient convertis en `BookDto` au niveau de vos `Controller`s.
 
 Chacun de vos `Controller`s doivent utiliser et renvoyer des `BookDto`.
 
@@ -422,7 +422,7 @@ Chacun de vos `Controller`s doivent utiliser et renvoyer des `BookDto`.
 
 ⚠️ Testez votre code et pensez à commit.
 
-### Raccourcis utiles 
+## Raccourcis utiles 
 ---
 
 - Recommandation VS : `Alt + Entrée` => Hyper utile, n'hésitez pas à en abuser
@@ -438,12 +438,16 @@ Chacun de vos `Controller`s doivent utiliser et renvoyer des `BookDto`.
 - Instruction suivante dans la méthode : `F11`
 - Ajouter une référence à un projet : `Clic droit sur un Projet > Ajouter > Ajouter une référence à un projet`
 
-### Contacts
+## Contacts
 ---
 
 - Mail : erwann.fiolet@gmail.com
 - Discord : byabyakar
 
-Pour m'envoyer votre TP, envoyer moi un mail avec pour objet : **[IUT] Nom Prénom 1 - Nom Prénom 2** en me précisant dans le contenu la partie à laquelle vous vous êtes arrêtés.
+Pour m'envoyer votre TP, envoyez-moi un courriel avec pour objet : **[IUT] Nom Prénom 1 - Nom Prénom 2** en me précisant dans le corps la partie à laquelle vous vous êtes arrêtés.
 
-Ajoutez-y un zip de votre solution que vous aurez préalablement nettoyer `Générer > Nettoyer la solution`
+Ajoutez-y un zip de votre solution que vous aurez préalablement nettoyé `Générer > Nettoyer la solution`
+
+### Relecture 📝
+
+- Colin Prokopowicz 
