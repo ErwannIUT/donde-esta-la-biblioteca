@@ -1538,13 +1538,399 @@ Chacun de vos `Controller`s doivent utiliser et renvoyer des `BookDto`.
 
 ⚠️ Testez votre code et pensez à commiter.
 
-
-### Etape 10 : WIP
+## Glossaire des termes techniques
 ---
 
+### Architecture et Design Patterns
 
+**Architecture en couches (Layered Architecture)**
+- Organisation du code en différentes couches avec des responsabilités distinctes
+- Exemple : Présentation → Services → DataAccess → BusinessObjects
 
-⚠️ Testez votre code et pensez à commiter.
+**Pattern Repository**
+- Abstraction de l'accès aux données
+- Centralise la logique d'accès à la base de données
+
+**Design Pattern**
+- Solution réutilisable à un problème récurrent
+- Exemples : Singleton, Factory, Repository, Observer
+
+### Concepts .NET et C#
+
+**Solution (.sln)**
+- Conteneur de projets Visual Studio
+- Permet de gérer plusieurs projets ensemble
+
+**Projet (.csproj)**
+- Unité de compilation
+- Génère une DLL ou un EXE
+
+**DLL (Dynamic Link Library)**
+- Bibliothèque de code compilé réutilisable
+- Ne peut pas s'exécuter seule
+
+**NuGet**
+- Gestionnaire de packages pour .NET
+- Équivalent de npm (JavaScript) ou pip (Python)
+
+**Namespace**
+- Espace de noms pour organiser le code
+- Évite les conflits de noms : `System.Collections.Generic`
+
+**Assembly**
+- Unité de déploiement .NET (DLL ou EXE)
+- Contient le code compilé (IL - Intermediate Language)
+
+### Programmation Orientée Objet (POO)
+
+**Classe**
+- Modèle/Blueprint pour créer des objets
+- Définit la structure (propriétés) et le comportement (méthodes)
+
+**Interface**
+- Contrat qui définit des méthodes sans implémentation
+- Commence par `I` : `IRepository`, `IService`
+
+**Héritage**
+- Mécanisme permettant à une classe d'hériter d'une autre
+- `class Book : IEntity`
+
+**Propriété (Property)**
+- Membre de classe avec getter/setter
+- `public string Name { get; set; }`
+
+**Méthode**
+- Fonction membre d'une classe
+- Définit un comportement
+
+**Constructeur**
+- Méthode spéciale appelée lors de la création d'un objet
+- Même nom que la classe : `public Book() { }`
+
+### Concepts avancés C#
+
+**Générique (Generic)**
+- Type paramétré qui fonctionne avec n'importe quel type
+- `List<T>`, `IGenericRepository<T>`
+
+**Lambda (Expression Lambda)**
+- Fonction anonyme concise
+- `book => book.Type == "Aventure"`
+
+**LINQ (Language Integrated Query)**
+- Langage de requête intégré pour manipuler des collections
+- `books.Where(b => b.Type == "Aventure")`
+
+**Extension Methods**
+- Méthodes ajoutées à un type existant sans modification
+- Utilisées par LINQ : `.Where()`, `.Select()`
+
+**Nullable**
+- Type pouvant être null
+- `int?` peut contenir un nombre ou null
+
+**var**
+- Mot-clé pour inférence de type
+- Le compilateur déduit le type : `var books = new List<Book>();`
+
+### Base de données et ORM
+
+**ORM (Object-Relational Mapping)**
+- Outil pour mapper objets C# ↔ tables SQL
+- EntityFramework est un ORM
+
+**EntityFramework (EF Core)**
+- ORM officiel de Microsoft pour .NET
+- Permet d'accéder aux bases de données via du code C#
+
+**DbContext**
+- Classe centrale d'EntityFramework
+- Représente une session avec la base de données
+
+**DbSet<T>**
+- Représente une table dans le DbContext
+- `DbSet<Book>` → table `books`
+
+**Migration**
+- Fichier décrivant les modifications de schéma de base de données
+- Permet de versionner la structure de la BD
+
+**Eager Loading**
+- Chargement anticipé des relations
+- `.Include(b => b.Author)` charge l'auteur immédiatement
+
+**Lazy Loading**
+- Chargement différé des relations
+- Les données sont chargées uniquement quand on y accède
+
+**CRUD**
+- Create, Read, Update, Delete
+- Opérations de base sur les données
+
+### Injection de dépendances
+
+**Injection de dépendance (DI)**
+- Pattern où les dépendances sont fournies de l'extérieur
+- Améliore la testabilité et la maintenabilité
+
+**Conteneur DI (IoC Container)**
+- Gestionnaire qui crée et injecte les dépendances
+- `IServiceProvider` en .NET
+
+**Scope / Cycle de vie**
+- Durée de vie d'un objet injecté :
+  - **Transient** : Nouvelle instance à chaque injection
+  - **Scoped** : Une instance par requête/scope
+  - **Singleton** : Une seule instance pour toute l'application
+
+**Couplage**
+- Degré de dépendance entre classes
+- **Couplage faible** (loose coupling) : Préférable, facilite les modifications
+
+### Tests
+
+**Test Unitaire (Unit Test)**
+- Teste une unité de code isolée (une méthode)
+- Rapide, automatisé, répétable
+
+**Mock**
+- Faux objet qui simule une dépendance
+- Utilisé dans les tests pour isoler le code testé
+
+**AAA Pattern**
+- **Arrange** : Préparer les données
+- **Act** : Exécuter le code
+- **Assert** : Vérifier le résultat
+
+**Framework de test**
+- Outil pour écrire et exécuter des tests
+- xUnit, NUnit, MSTest
+
+### API et Web
+
+**API (Application Programming Interface)**
+- Interface permettant à des applications de communiquer
+- Définit les méthodes/endpoints disponibles
+
+**REST (REpresentational State Transfer)**
+- Style d'architecture pour les APIs web
+- Utilise HTTP : GET, POST, PUT, DELETE
+
+**Endpoint**
+- Point d'accès d'une API
+- Exemple : `GET /api/books`
+
+**JSON (JavaScript Object Notation)**
+- Format de données textuelles
+- Utilisé pour échanger des données entre client/serveur
+
+**HTTP Status Codes**
+- Codes indiquant le résultat d'une requête :
+  - 2xx : Succès (200 OK, 201 Created)
+  - 4xx : Erreur client (400 Bad Request, 404 Not Found)
+  - 5xx : Erreur serveur (500 Internal Server Error)
+
+**Controller**
+- Classe gérant les requêtes HTTP dans une API
+- Contient les endpoints
+
+**Middleware**
+- Composant dans le pipeline de traitement des requêtes
+- Exemple : Authentication, Logging, CORS
+
+**Swagger / OpenAPI**
+- Outil de documentation d'API
+- Génère une interface interactive pour tester l'API
+
+### Transfert de données
+
+**DTO (Data Transfer Object)**
+- Objet pour transférer des données entre couches
+- Limite les données exposées par l'API
+
+**Mapping**
+- Conversion d'un objet vers un autre
+- Exemple : `Book` → `BookDto`
+
+**AutoMapper**
+- Bibliothèque pour automatiser le mapping
+- Évite le code répétitif de conversion
+
+### Divers
+
+**Attribut (Attribute)**
+- Métadonnées ajoutées au code
+- `[HttpGet]`, `[Required]`, `[ApiController]`
+
+**Async/Await**
+- Programmation asynchrone
+- Permet d'exécuter du code sans bloquer
+
+**Exception**
+- Erreur durant l'exécution
+- `try-catch-finally` pour gérer les erreurs
+
+**Debugging**
+- Processus de recherche et correction de bugs
+- Utilise des breakpoints, step-by-step
+
+**Compilation**
+- Transformation du code source en code exécutable
+- Détecte les erreurs de syntaxe et de type
+
+**IntelliSense**
+- Autocomplétion de Visual Studio
+- Suggestions de code en temps réel
+
+## Problèmes courants et solutions
+---
+
+### Erreurs de compilation
+
+**"The type or namespace name could not be found"**
+```
+Solution :
+1. Vérifier que le using est présent en haut du fichier
+2. Vérifier que la référence au projet est ajoutée
+3. Rebuild la solution (Ctrl + Shift + B)
+```
+
+**"Cannot implicitly convert type 'X' to 'Y'"**
+```
+Solution :
+- Vérifier les types des variables
+- Faire un cast explicite si nécessaire : (TypeY)variable
+- Utiliser des méthodes de conversion : .ToString(), .ToList()
+```
+
+**"Object reference not set to an instance of an object" (NullReferenceException)**
+```
+Solution :
+- Vérifier qu'un objet est bien instancié avant de l'utiliser
+- Utiliser l'opérateur null-conditional : book?.Name
+- Vérifier les retours de méthodes qui peuvent être null
+```
+
+### Erreurs EntityFramework
+
+**"Unable to create an object of type 'LibraryContext'"**
+```
+Solution :
+- Vérifier que DbContext est correctement configuré dans Program.cs
+- Vérifier que le constructeur DbContext accepte DbContextOptions
+- S'assurer que la chaîne de connexion est correcte
+```
+
+**"A referential integrity constraint violation occurred"**
+```
+Solution :
+- Respecter les contraintes de clés étrangères
+- Vérifier que l'entité liée existe avant de créer la relation
+- Vérifier les propriétés de navigation
+```
+
+**"Sequence contains no elements" (InvalidOperationException)**
+```
+Solution :
+- Utiliser FirstOrDefault() au lieu de First()
+- Vérifier que la collection n'est pas vide avant d'y accéder
+- Gérer le cas où aucun élément ne correspond
+```
+
+### Erreurs d'injection de dépendances
+
+**"Unable to resolve service for type 'IService'"**
+```
+Solution :
+- Vérifier que le service est enregistré dans Program.cs
+- Vérifier l'ordre d'enregistrement des services
+- S'assurer que l'interface et la classe sont correctes
+```
+
+**"Cannot consume scoped service from singleton"**
+```
+Solution :
+- Un singleton ne peut pas dépendre d'un scoped
+- Changer le cycle de vie du service
+- Utiliser IServiceProvider pour créer un scope
+```
+
+### Erreurs API
+
+**"405 Method Not Allowed"**
+```
+Solution :
+- Vérifier que le bon verbe HTTP est utilisé (GET, POST, etc.)
+- Vérifier les attributs [HttpGet], [HttpPost] sur les méthodes
+```
+
+**"404 Not Found"**
+```
+Solution :
+- Vérifier la route : /api/controller/action
+- Vérifier l'attribut [Route] sur le contrôleur
+- S'assurer que l'application est lancée
+```
+
+**"415 Unsupported Media Type"**
+```
+Solution :
+- Ajouter Content-Type: application/json dans les headers
+- Utiliser [FromBody] pour les paramètres POST
+```
+
+**"Circular reference detected" (JSON)"**
+```
+Solution :
+- Utiliser des DTOs au lieu d'entités directement
+- Configurer JSON pour ignorer les références circulaires :
+  builder.Services.AddControllers()
+    .AddJsonOptions(options => {
+      options.JsonSerializerOptions.ReferenceHandler = 
+        ReferenceHandler.IgnoreCycles;
+    });
+```
+
+### Erreurs de tests
+
+**"Mock object is not set up correctly"**
+```
+Solution :
+- Vérifier que Setup() est appelé avant Act
+- S'assurer que les paramètres du Setup correspondent à ceux de l'appel
+- Utiliser It.IsAny<T>() pour des paramètres génériques
+```
+
+**"Test passes locally but fails in CI"**
+```
+Solution :
+- Vérifier les dépendances de chemin (utiliser des chemins relatifs)
+- S'assurer que les tests sont isolés (pas d'état partagé)
+- Vérifier les configurations d'environnement
+```
+
+### Conseils de débogage
+
+**Utiliser les breakpoints**
+```
+- Cliquer dans la marge gauche pour placer un breakpoint
+- F5 pour lancer en mode debug
+- F10 pour exécuter ligne par ligne
+- F11 pour entrer dans une méthode
+```
+
+**Inspecter les variables**
+```
+- Survoler une variable pour voir sa valeur
+- Utiliser la fenêtre "Variables locales" (Debug > Fenêtres > Variables locales)
+- Ajouter une "Espion" pour suivre une expression
+```
+
+**Console.WriteLine() pour tracer**
+```cs
+Console.WriteLine($"Valeur de book: {book}");
+Console.WriteLine($"Nombre d'éléments: {books.Count()}");
+```
 
 ## Raccourcis utiles 
 ---
