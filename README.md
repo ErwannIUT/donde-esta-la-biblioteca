@@ -1054,91 +1054,9 @@ Créez un fichier `BookController` qui va comprendre les méthodes suivantes :
 - `GET /books/{id}` : Récupère un livre par son ID
 - `GET /books/type/{type}` : Récupère les livres d'un type donné
 - `POST /books` : Ajoute un nouveau livre
-- `GET /books/top-rated` : Récupère le livre le mieux noté (TODO)
-- `DELETE /books/{id}` : Supprime un livre (TODO)
+- `GET /books/top-rated` : Récupère le livre le mieux noté
+- `DELETE /books/{id}` : Supprime un livre
 
-**Exemple d'implémentation du BookController :**
-
-```cs
-using Microsoft.AspNetCore.Mvc;
-
-namespace LibraryManager.Hosting.Controllers
-{
-    [ApiController]
-    [Route("api/[controller]")]  // Route : /api/books
-    public class BooksController : ControllerBase
-    {
-        private readonly ICatalogManager _catalogManager;
-
-        // Injection du service via le constructeur
-        public BooksController(ICatalogManager catalogManager)
-        {
-            _catalogManager = catalogManager;
-        }
-
-        // GET api/books
-        [HttpGet]
-        public IActionResult GetAll()
-        {
-            var books = _catalogManager.GetCatalog();
-            return Ok(books);  // Retourne un HTTP 200 avec les données
-        }
-
-        // GET api/books/5
-        [HttpGet("{id}")]
-        public IActionResult GetById(int id)
-        {
-            var book = _catalogManager.FindBook(id);
-            
-            if (book == null)
-                return NotFound();  // Retourne HTTP 404 si non trouvé
-            
-            return Ok(book);  // Retourne HTTP 200 avec le livre
-        }
-
-        // GET api/books/type/Aventure
-        [HttpGet("type/{type}")]
-        public IActionResult GetByType(TypeBook type)
-        {
-            var books = _catalogManager.GetCatalog(type);
-            return Ok(books);
-        }
-
-        // POST api/books
-        [HttpPost]
-        public IActionResult Add([FromBody] Book book)
-        {
-            if (book == null)
-                return BadRequest();  // Retourne HTTP 400 si données invalides
-            
-            // Logique d'ajout (à implémenter dans le CatalogManager)
-            // var addedBook = _catalogManager.AddBook(book);
-            
-            return CreatedAtAction(
-                nameof(GetById),      // Nom de la méthode pour récupérer le livre
-                new { id = book.Id }, // Paramètres de route
-                book                  // Corps de la réponse
-            );  // Retourne HTTP 201 Created
-        }
-
-        // GET api/books/top-rated
-        [HttpGet("top-rated")]
-        public IActionResult GetTopRated()
-        {
-            // TODO: Implémenter la logique pour récupérer le livre le mieux noté
-            return Ok(new { message = "TODO" });
-        }
-
-        // DELETE api/books/5
-        [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
-        {
-            // TODO: Implémenter la logique de suppression
-            return NoContent();  // Retourne HTTP 204 No Content
-        }
-    }
-}
-```
 
 **Codes de statut HTTP courants :**
 ```cs
@@ -1155,13 +1073,13 @@ return StatusCode(500);       // 500 : Erreur serveur
 **Paramètres dans les contrôleurs :**
 ```cs
 [HttpGet("{id}")]                    // Paramètre dans l'URL
-public IActionResult Get(int id)     // Automatiquement lié
+public IActionResult Get(int id);     // Automatiquement lié
 
 [HttpPost]
-public IActionResult Create([FromBody] Book book)  // Depuis le corps JSON
+public IActionResult Create([FromBody] <Item> item);  // Depuis le corps JSON
 
 [HttpGet]
-public IActionResult Search([FromQuery] string name)  // Depuis query string ?name=...
+public IActionResult Search([FromQuery] string name);  // Depuis query string ?name=...
 ```
 
 Implémentez les méthodes manquantes.
@@ -1226,117 +1144,15 @@ public class Book : IEntity
 // Problème : Tout est exposé dans l'API, même les données internes !
 ```
 
-**Solution avec DTO :**
-```cs
-// DTO : Version publique sans données sensibles
-public class BookDto
-{
-    public int Id { get; set; }
-    public string Name { get; set; }
-    public int Pages { get; set; }
-    public string Type { get; set; }
-    // Pas de Rate (information interne)
-    // Pas de IdAuthor (clé étrangère)
-    public AuthorDto Author { get; set; }  // Auteur inclus mais aussi en DTO
-}
-
-public class AuthorDto
-{
-    public string FirstName { get; set; }
-    public string LastName { get; set; }
-    public string FullName => $"{FirstName} {LastName}";
-}
-```
-
 Dans votre projet `BusinessObjects`, créez un dossier `DataTransfertObject`.
 Dans celui-ci, vous pouvez créer un `BookDto`. 
 
 Un DTO est une version de l'objet destinée à l'extérieur de votre application. Cela peut être utile pour limiter les données accessibles aux clients de votre API.
 
-Dans votre `BookDto`, reprenez les éléments de votre `Book` en retirant le `Rate`.
+Dans votre `BookDto`, reprenez les éléments de votre `Book` qui posent problèmes.
 
 Faites en sorte que les `Book`s fournis par votre `CatalogManager` soient convertis en `BookDto` au niveau de vos `Controller`s.
 
-**Conversion manuelle (simple) :**
-```cs
-// Dans votre contrôleur
-[HttpGet]
-public IActionResult GetAll()
-{
-    var books = _catalogManager.GetCatalog();
-    
-    // Conversion manuelle Book → BookDto
-    var bookDtos = books.Select(book => new BookDto
-    {
-        Id = book.Id,
-        Name = book.Name,
-        Pages = book.Pages,
-        Type = book.Type.ToString(),
-        Author = new AuthorDto
-        {
-            FirstName = book.Author.FirstName,
-            LastName = book.Author.LastName
-        }
-    });
-    
-    return Ok(bookDtos);
-}
-```
-
-**Conversion automatique avec AutoMapper (recommandé) :**
-
-AutoMapper est une bibliothèque qui automatise le mapping entre objets.
-
-```cs
-// 1. Installer le package NuGet : AutoMapper.Extensions.Microsoft.DependencyInjection
-
-// 2. Créer un profil de mapping
-public class MappingProfile : Profile
-{
-    public MappingProfile()
-    {
-        CreateMap<Book, BookDto>()
-            .ForMember(dest => dest.Type, 
-                      opt => opt.MapFrom(src => src.Type.ToString()));
-        
-        CreateMap<Author, AuthorDto>();
-    }
-}
-
-// 3. Enregistrer AutoMapper dans Program.cs
-builder.Services.AddAutoMapper(typeof(MappingProfile));
-
-// 4. Utiliser dans le contrôleur
-public class BooksController : ControllerBase
-{
-    private readonly ICatalogManager _catalogManager;
-    private readonly IMapper _mapper;
-
-    public BooksController(ICatalogManager catalogManager, IMapper mapper)
-    {
-        _catalogManager = catalogManager;
-        _mapper = mapper;
-    }
-
-    [HttpGet]
-    public IActionResult GetAll()
-    {
-        var books = _catalogManager.GetCatalog();
-        var bookDtos = _mapper.Map<IEnumerable<BookDto>>(books);
-        return Ok(bookDtos);
-    }
-
-    [HttpGet("{id}")]
-    public IActionResult GetById(int id)
-    {
-        var book = _catalogManager.FindBook(id);
-        if (book == null) return NotFound();
-        
-        var bookDto = _mapper.Map<BookDto>(book);
-        return Ok(bookDto);
-    }
-}
-```
 
 Chacun de vos `Controller`s doivent utiliser et renvoyer des `BookDto`.
 
