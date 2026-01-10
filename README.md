@@ -311,7 +311,7 @@ Author (1) ────── (N) Book (N) ────── (N) Library
 
 **2. Créer les repositories (DataAccessLayer)**
 
-Dans votre projet `DataAccessLayer`, créez un dossier `Repository`, puis dans ce dossier une classe repository pour chaque entité (ex : `BookRepository`)
+Dans votre projet `DataAccessLayer`, créez un dossier `Repository`, puis dans ce dossier une classe repository pour chaque entité (ex : `BookRepository`, etc...)
 
 **Explication : Le pattern Repository**
 - Un **Repository** est une classe qui gère l'accès aux données
@@ -320,8 +320,10 @@ Dans votre projet `DataAccessLayer`, créez un dossier `Repository`, puis dans c
 - Facilite les tests (on peut créer un faux repository pour tester)
 
 Vous y créerez les méthodes :
-- `IEnumerable<Book> GetAll()`
-- `Book Get(int id)` 
+- `IEnumerable<object> GetAll()`
+- `object Get(int id)`
+
+`object` étant à remplacer pour chaque entité. 
 
 **Exemple de Repository :**
 ```cs
@@ -726,32 +728,29 @@ Dans votre `DataAccessLayer`, créez un dossier `Contexts` et un fichier `Librar
 
 **Exemple de DbContext :**
 ```cs
-// Fichier: Contexts/LibraryContext.cs
-public class LibraryContext : DbContext
+public class ItemContext : DbContext
 {
-    public LibraryContext(DbContextOptions<LibraryContext> options) 
+    public ItemContext(DbContextOptions<ItemContext> options) 
         : base(options)
     {
     }
 
     // DbSet : Représente une table de la base de données
-    public DbSet<Book> Books { get; set; }
-    public DbSet<Author> Authors { get; set; }
-    public DbSet<Library> Libraries { get; set; }
+    public DbSet<Item> Items { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         // Configuration des relations Many-to-Many
-        modelBuilder.Entity<Book>()
-            .HasMany(b => b.Libraries)
-            .WithMany(l => l.Books)
-            .UsingEntity(j => j.ToTable("stock"));
+        modelBuilder.Entity<Item>()
+            .HasMany(b => b.Items)
+            .WithMany(l => l.ExternalItems)
+            .UsingEntity(j => j.ToTable("external_items"));
             
         // Configuration des relations One-to-Many
         modelBuilder.Entity<Book>()
-            .HasOne(b => b.Author)
-            .WithMany(a => a.Books)
-            .HasForeignKey(b => b.IdAuthor);
+            .HasOne(b => b.Item)
+            .WithMany(a => a.ExternalItems)
+            .HasForeignKey(b => b.ExternalId);
     }
 }
 ```
@@ -760,7 +759,7 @@ Pensez à l'injecter, pour une fois on utilisera une classe concrète. Vous aure
 
 ```cs
 // Dans la configuration du service
-services.AddDbContext<LibraryContext>(options =>
+services.AddDbContext<ItemContext>(options =>
 {
     // Chemin vers la base de données
     string dbPath = Path.Combine(Directory.GetCurrentDirectory(), "library.db");
@@ -784,35 +783,13 @@ Dans vos repositories, utilisez le `LibraryContext` injecté pour récupérer le
 
 **Exemple de Repository avec EntityFramework :**
 ```cs
-public class BookRepository : IGenericRepository<Book>
+public class ItemRepository : IGenericRepository<Item>
 {
-    private readonly LibraryContext _context;
+    private readonly ItemContext _context;
 
-    public BookRepository(LibraryContext context)
+    public ItemRepository(ItemContext context)
     {
         _context = context;
-    }
-
-    public IEnumerable<Book> GetAll()
-    {
-        // Include : Charge les relations (eager loading)
-        return _context.Books
-                       .Include(b => b.Author)  // Charge l'auteur en même temps
-                       .ToList();
-    }
-
-    public Book Get(int id)
-    {
-        return _context.Books
-                       .Include(b => b.Author)
-                       .FirstOrDefault(b => b.Id == id);
-    }
-    
-    public Book Add(Book entity)
-    {
-        _context.Books.Add(entity);
-        _context.SaveChanges();  // Persiste les changements en BD
-        return entity;
     }
 }
 ```
@@ -821,7 +798,7 @@ Ajoutez une méthode `IEntity Add(IEntity)` dans `IGenericRepository`. Compilez 
 
 Vous réalisez à quel point c'est fastidieux de tout changer à la fois.
 
-(Refacto en cours) Maintenant créez une classe concrète `GenericRepository<T>` qui doit remplacer tous vos repositories existants et remplacez les injections.
+Maintenant créez une classe concrète `GenericRepository<T>` qui doit remplacer tous vos repositories existants et remplacez les injections.
 
 **Exemple de GenericRepository :**
 ```cs
@@ -891,13 +868,13 @@ Un **test unitaire** vérifie qu'une petite unité de code (généralement une m
 **Pattern AAA (Arrange-Act-Assert) :**
 ```cs
 [Fact]
-public void GetCatalog_WithType_ReturnsFilteredBooks()
+public void GetCatalog_WithType_ReturnsFilteredItems()
 {
     // Arrange : Prépare les données et mocks
-    var mockBooks = new List<Book> { /* ... */ };
+    var mockBooks = new List<Item> { /* ... */ };
     
     // Act : Exécute la méthode à tester
-    var result = catalogManager.GetCatalog(TypeBook.Aventure);
+    var result = itemManager.GetItems(TypeBook.Aventure);
     
     // Assert : Vérifie le résultat
     Assert.Equal(2, result.Count());
@@ -912,114 +889,12 @@ Créez une classe `CatalogManagerTest`.
 - `Moq` : Bibliothèque de mocking
 - `Microsoft.NET.Test.Sdk` : SDK pour exécuter les tests
 
-Implémentez un test unitaire sur chaque méthode de votre `CatalogManager` en pensant à mocker le retour de votre `Repository` pour bien tester unitairement votre méthode.
+Implémentez un test unitaire pour chaque méthode de votre `CatalogManager`. 
+Créez un Mock de chaque `Repository` pour bien tester unitairement votre méthode.
 
 **Qu'est-ce qu'un Mock ?**
 
 Un **mock** est un faux objet qui simule le comportement d'une dépendance. Cela permet de tester une classe sans dépendre de ses dépendances réelles.
-
-**Exemple de test avec Mock :**
-```cs
-using Moq;
-using Xunit;
-
-public class CatalogManagerTest
-{
-    private readonly Mock<IGenericRepository<Book>> _mockBookRepository;
-    private readonly CatalogManager _catalogManager;
-
-    public CatalogManagerTest()
-    {
-        // Arrange : Créer un mock du repository
-        _mockBookRepository = new Mock<IGenericRepository<Book>>();
-        
-        // Injecter le mock dans le service
-        _catalogManager = new CatalogManager(_mockBookRepository.Object);
-    }
-
-    [Fact]
-    public void GetCatalog_ReturnsAllBooks()
-    {
-        // Arrange : Définir le comportement du mock
-        var expectedBooks = new List<Book>
-        {
-            new Book { Id = 1, Name = "Book 1", Type = TypeBook.Aventure },
-            new Book { Id = 2, Name = "Book 2", Type = TypeBook.Fiction }
-        };
-        
-        _mockBookRepository
-            .Setup(repo => repo.GetAll())
-            .Returns(expectedBooks);
-
-        // Act : Appeler la méthode
-        var result = _catalogManager.GetCatalog();
-
-        // Assert : Vérifier le résultat
-        Assert.NotNull(result);
-        Assert.Equal(2, result.Count());
-        Assert.Contains(result, b => b.Name == "Book 1");
-    }
-
-    [Fact]
-    public void GetCatalog_WithTypeAventure_ReturnsOnlyAdventureBooks()
-    {
-        // Arrange
-        var allBooks = new List<Book>
-        {
-            new Book { Id = 1, Name = "Adventure 1", Type = TypeBook.Aventure },
-            new Book { Id = 2, Name = "Fiction 1", Type = TypeBook.Fiction },
-            new Book { Id = 3, Name = "Adventure 2", Type = TypeBook.Aventure }
-        };
-        
-        _mockBookRepository
-            .Setup(repo => repo.GetAll())
-            .Returns(allBooks);
-
-        // Act
-        var result = _catalogManager.GetCatalog(TypeBook.Aventure);
-
-        // Assert
-        Assert.Equal(2, result.Count());
-        Assert.All(result, book => Assert.Equal(TypeBook.Aventure, book.Type));
-    }
-
-    [Fact]
-    public void FindBook_WithValidId_ReturnsBook()
-    {
-        // Arrange
-        var expectedBook = new Book { Id = 1, Name = "Test Book" };
-        
-        _mockBookRepository
-            .Setup(repo => repo.Get(1))
-            .Returns(expectedBook);
-
-        // Act
-        var result = _catalogManager.FindBook(1);
-
-        // Assert
-        Assert.NotNull(result);
-        Assert.Equal("Test Book", result.Name);
-        
-        // Vérifier que Get a bien été appelé avec le bon paramètre
-        _mockBookRepository.Verify(repo => repo.Get(1), Times.Once);
-    }
-
-    [Fact]
-    public void FindBook_WithInvalidId_ReturnsNull()
-    {
-        // Arrange
-        _mockBookRepository
-            .Setup(repo => repo.Get(999))
-            .Returns((Book)null);
-
-        // Act
-        var result = _catalogManager.FindBook(999);
-
-        // Assert
-        Assert.Null(result);
-    }
-}
-```
 
 **Méthodes Assert courantes :**
 ```cs
