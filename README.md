@@ -51,13 +51,13 @@ N'hésitez pas à me consulter à chaque étape pour vous assurer que vous avez 
 ### Etape 1 : Créer sa solution .NET
 ----
 
-Créez un nouveau projet via Visual Studio 2022, puis sélectionner une *Application Console*.
+Créez un nouveau projet via Visual Studio 2022, puis sélectionnez une *Application Console*.
 
 Vous appellerez votre projet `LibraryManager.App` et votre solution `LibraryManager`.
 
 Si vous n'avez pas d'explorateur de solution sur votre IDE, vous pouvez aussi l'ajouter via le menu `Affichage > Explorateur de Solution`.
 
-Ajouter via le *gestionnaire de package Nuget* sur votre projet : Microsoft.Extensions.Hosting
+Ajoutez via le *gestionnaire de package Nuget* sur votre projet : Microsoft.Extensions.Hosting
 
 Veillez à bien être en vue Solution et d'avoir votre projet chargé.
 
@@ -70,7 +70,7 @@ Créez une méthode Main dans le `Program.cs` grâce aux recommandations VS `Alt
 
 Créez une classe `Book` qui contiendra uniquement un `string Name` et un `string Type`. 
 
-Dans cette méthode, vous allez faire créer une liste de livre que vous allez alimenter avec quelques éléments dont au moins un livre de type `Aventure`. Libre à vous de mettre ce que vous souhaitez dans celle-ci.
+Dans cette méthode, vous allez créer une liste de livres que vous allez alimenter avec quelques éléments dont au moins un livre de type `Aventure`. Libre à vous de mettre ce que vous souhaitez dans celle-ci.
 
 Vous allez ensuite boucler sur celle-ci et afficher dans la console les différents noms.
 
@@ -105,7 +105,7 @@ Maintenant passons à l'implémentation de notre architecture.
 
 Déplacez-y votre classe `Book` que vous compléterez et changez votre `string Type` en enum `TypeBook Type`. Pas besoin de créer un fichier pour la table de `Stock`.
 
-Faites en sorte que toutes entités héritent d'une interface `IEntity` qui contiendra une propriété `int Id`.
+Faites en sorte que toutes les entités héritent d'une interface `IEntity` qui contiendra une propriété `int Id`.
 
 Dans le cadre d'une relation `OneToMany` (1..\*) ou `ManyToMany` (\*), le **Many** se manifeste sous la forme d'une liste (Ex : `IEnumerable<ClassA>`) et le **One** sous la forme d'un objet simple (Ex : `ClassA`).
 
@@ -130,7 +130,7 @@ Pour le `BookRepository`, utilisez la liste que vous avez créé dans le `Main` 
 
 4. Dans votre projet `Services`, créez un dossier `Services`, puis dans ce dossier une classe `CatalogManager` qui contiendra les méthodes `IEnumerable<Book> GetCatalog()`, `IEnumerable<Book> GetCatalog(Type type)` et `Book FindBook(int id)` qui utiliseront le `BookRepository`.
 
-Ces méthodes vont utiliser les Repository que vous avez créé. Remplacez les méthodes de votre `Main` par les méthodes nouvellement créées dans votre `CatalogManager`.
+Ces méthodes vont utiliser les Repositories que vous avez créés. Remplacez les méthodes de votre `Main` par les méthodes nouvellement créées dans votre `CatalogManager`.
 
 
 ### Etape 5 : Injection de dépendance
@@ -159,7 +159,7 @@ L’injection de dépendances consiste, pour une classe, à déléguer la créat
 
 Par exemple, nous possédons une classe concrète `ApiACaller` que j'instancie à plusieurs endroits dans mon code.
 Demain, on nous demande de la remplacer par un `ApiBCaller` car la source de données doit changer.
-Plutôt que d'avoir à changer toutes les références à notre classe concrète, nous allons mettre dans le constructeur notre interface qui vous donnera les fonctions disponibles.
+Plutôt que d'avoir à changer toutes les références à notre classe concrète, nous allons mettre dans le constructeur notre interface qui nous donnera les fonctions disponibles.
 Et à plus haut niveau, nous lui injecterons la classe concrète qui correspondera à cette interface.
 
 A la compilation, la classe concrète correspondante est inconnue. Par contre, à l'exécution, cette classe est injectée à chaque fois qu'une référence est faite à celle-ci via l'interface.
@@ -246,7 +246,7 @@ Avec l'aide de la base de données SQLite fournie en annexe, vous allez impléme
 
 Vous aurez besoin d'un package SQLite pour poursuivre, je vous laisse chercher.
 
-Le but ici est d'au lieu de renvoyer des listes vides au niveau de vos `Repositories`, de renvoyer les infos qui sont stockées en base de données.
+Le but ici est de renvoyer les informations stockées en base de données au lieu de renvoyer des listes vides au niveau de vos `Repositories`.
 
 Dans votre `DataAccessLayer`, créez un dossier `Contexts` et un fichier `LibraryContext` qui implémentera la classe `DbContext`, servez-vous de la documentation pour remplir votre DbContext.  
 
@@ -284,7 +284,7 @@ Pour plus d'informations :
 Créez un dossier `Tests` à la racine de votre solution et un nouveau projet `Services.Test` dans ce dossier.
 Créez une classe `CatalogManagerTest`.
 
-Implémentez un test unitaire sur chaque méthode de votre `CatalogManager` en pensant à Mock le retour de votre `Repository` pour bien tester unitairement votre méthode.
+Implémentez un test unitaire sur chaque méthode de votre `CatalogManager` en pensant à mocker le retour de votre `Repository` pour bien tester unitairement votre méthode.
 
 Pour plus d'informations : [TU avec C# - Microsoft](https://learn.microsoft.com/fr-fr/dotnet/core/testing/unit-testing-with-dotnet-test)
 
@@ -295,7 +295,7 @@ Pour plus d'informations : [TU avec C# - Microsoft](https://learn.microsoft.com/
 
 On va maintenant mettre en place une API. Pour rappel, une API est une interface logicielle sur laquelle vous pourrez vous connecter et récupérer des informations via requête HTTP. Elle vous renverra un résultat sous la forme d'un JSON.
 
-Pour cela, vous allez créer un nouveau projet de type `ASP.NET Core WebAPI`, sans authentification que vous allez appeler `LibraryManager.Hosting`.
+Pour cela, vous allez créer un nouveau projet de type `ASP.NET Core WebAPI` sans authentification, que vous allez appeler `LibraryManager.Hosting`.
 
 Une fois créé, vous allez mettre ce projet en tant que projet de démarrage. 
 
@@ -404,7 +404,7 @@ Pour plus d'informations : [Tutoriel ASP.NET Core Web API- Microsoft](https://le
 Dans votre projet `BusinessObjects`, créez un dossier `DataTransfertObject`.
 Dans celui-ci, vous pouvez créer un `BookDto`. 
 
-Un DTO est une version de l'objet qui sera à destination de l'extérieur de votre application, cela peut être utile pour limiter les données accessibles aux clients de votre API.
+Un DTO est une version de l'objet destinée à l'extérieur de votre application. Cela peut être utile pour limiter les données accessibles aux clients de votre API.
 
 Dans votre `BookDto`, reprenez les éléments de votre `Book` en retirant le `Rate`.
 
