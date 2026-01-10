@@ -17,9 +17,9 @@ Si vous voulez la ref du **Donde esta la Biblioteca** : https://www.youtube.com/
 ## Les mots clefs
 
 - *Solution*
-  - La racine de votre application .NET qui permet d'avoir la vision globale des projet
+  - La racine de votre application .NET qui permet d'avoir la vision globale des projets
   - Manifestée sous la forme d'un fichier **.sln**, c'est ce fichier qu'il faut ouvrir pour ouvrir votre espace de travail
-  - Va contenir un ou plusieurs projet
+  - Va contenir un ou plusieurs projets
 - *Projet* :
   - Bloc de construction de l'application
   - Va générer une dll par projet
@@ -39,12 +39,12 @@ Si vous voulez la ref du **Donde esta la Biblioteca** : https://www.youtube.com/
   - "Singulier" pour un objet simple et "Pluriel" pour une liste 
   - **PascalCase** : Pour les noms de classes, interfaces et propriétés
   - **camelCase** : Pour les variables
-  - **_camelCase** : Pour les variables déclaré au niveau de la classe
+  - **_camelCase** : Pour les variables déclarées au niveau de la classe
   - Nom d'interface commençant par un **I**
   - Nom de classe abstraite par un **A**
   - Pensez à compiler régulièrement : si ça ne compile pas, c'est un 0
 
-N'hésitez pas à me consulter à chaque étape pour vous assurez que vous avez bien réalisé chaque action.
+N'hésitez pas à me consulter à chaque étape pour vous assurer que vous avez bien réalisé chaque action.
 
 ## TODO
 
@@ -61,12 +61,12 @@ Ajouter via le *gestionnaire de package Nuget* sur votre projet : Microsoft.Exte
 
 Veillez à bien être en vue Solution et d'avoir votre projet chargé.
 
-⚠️ Testez votre code et pensez à commit.
+⚠️ Testez votre code et pensez à commiter.
 
 ### Etape 2 : Commencer son programme
 ---
 
-Créez une méthode Main dans le `Program.cs` grâce aux recommandations VS `Alt + Entrée` à la l'intérieur du fichier.
+Créez une méthode Main dans le `Program.cs` grâce aux recommandations VS `Alt + Entrée` à l'intérieur du fichier.
 
 Créez une classe `Book` qui contiendra uniquement un `string Name` et un `string Type`. 
 
@@ -74,14 +74,14 @@ Dans cette méthode, vous allez faire créer une liste de livre que vous allez a
 
 Vous allez ensuite boucler sur celle-ci et afficher dans la console les différents noms.
 
-⚠️ Testez votre code et pensez à commit.
+⚠️ Testez votre code et pensez à commiter.
 
 ### Etape 3 : LINQ
 ---
 
-LINQ (prononcé line-cue) est langage d'interrogation pour vos tableaux en .NET.
+LINQ (prononcé line-cue) est un langage d'interrogation pour vos tableaux en .NET.
 
-Celui vos permettra de filtrer vos tableaux et d'ajouter une granularité supplémentaire.
+Celui-ci vous permettra de filtrer vos tableaux et d'ajouter une granularité supplémentaire.
 Il est possible d'utiliser LINQ via le langage correspondant (comme du SQL) ou d'utiliser des méthodes sur vos listes.
 
 Dans ce contexte, on utilisera la version avec des méthodes mais sachez que les deux sont possibles.
@@ -90,7 +90,7 @@ Filtrez votre liste pour n'afficher que les livres de type `Aventure`.
 
 Pour plus d'informations : [LINQ - Microsoft](https://learn.microsoft.com/fr-fr/dotnet/csharp/linq/) 
 
-⚠️ Testez votre code et pensez à commit.
+⚠️ Testez votre code et pensez à commiter.
 
 ### Etape 4.1 : Préparer son architecture
 ---
@@ -103,7 +103,7 @@ Maintenant passons à l'implémentation de notre architecture.
 
 1. Dans votre projet `BusinessObjects`, créez un dossier `Entity` et `Enum`, puis dans ce dossier `Entity`, créez les objets correspondants aux tables du fichier `LibraryInit.sql`.
 
-Déplacez-y votre classe `Book` que vous compléterez et changez votre `string Type` en enum de `TypeBook Type`. Pas besoin de créer un fichier pour la table de `Stock`.
+Déplacez-y votre classe `Book` que vous compléterez et changez votre `string Type` en enum `TypeBook Type`. Pas besoin de créer un fichier pour la table de `Stock`.
 
 Faites en sorte que toutes entités héritent d'une interface `IEntity` qui contiendra une propriété `int Id`.
 
@@ -111,15 +111,15 @@ Dans le cadre d'une relation `OneToMany` (1..\*) ou `ManyToMany` (\*), le **Many
 
 2. Dans votre projet `DataAccessLayer`, créez un dossier `Repository`, puis dans ce dossier une classe repository pour chaque entité (ex : `BookRepository`)
 
-Vous y créerez les méthodes `GetAll()` qui retournera un `IEnumerable<Book>` et `Get(int id)` qui retounera un `Book`, vous pouvez `return` des objets vides à ce stade.
+Vous y créerez les méthodes `GetAll()` qui retournera un `IEnumerable<Book>` et `Get(int id)` qui retournera un `Book`, vous pouvez `return` des objets vides à ce stade.
 
 Répétez le même schéma pour chacune de vos entités.
 
-Pour le `BookRepository`, utilisez la liste que vous avez créé dans le `Main` puis implémentez les méthodes `Book GetAll()` et `Book Get(int id)`, appelez ces méthodes dans votre `Main` et finalement tentez d'afficher les livres d'aventure.
+Pour le `BookRepository`, utilisez la liste que vous avez créé dans le `Main` puis implémentez les méthodes `IEnumerable<Book> GetAll()` et `Book Get(int id)`, appelez ces méthodes dans votre `Main` et finalement tentez d'afficher les livres d'aventure.
 
 **PI : Vous aurez besoin d'ajouter des références d'un projet à un autre pour permettre d'utiliser vos entités à l'extérieur de leur projet respectif.**
 
-⚠️ Testez votre code et pensez à commit.
+⚠️ Testez votre code et pensez à commiter.
 
 
 ### Etape 4.2 : Préparer son architecture
@@ -128,7 +128,7 @@ Pour le `BookRepository`, utilisez la liste que vous avez créé dans le `Main` 
  Mettez en place votre architecture de projets en ajoutant via Visual Studio des projets de type **Bibliothèque de classes** :
 - `Services` : Couche services intermédiaire; va permettre d'orchestrer les besoins et de relier d'autres couches entre elles
 
-4. Dans votre projet `Services`, créez un dossier `Services`, puis dans ce dossier une classe `CatalogManager` qui contiendra les méthodes `IEnumerable<Book> GetCatalog()`, `IEnumerable<Book> GetCatalog(Type type)` et `Book FindBook(int id)` qui utiliseront le `CatalogManager`.
+4. Dans votre projet `Services`, créez un dossier `Services`, puis dans ce dossier une classe `CatalogManager` qui contiendra les méthodes `IEnumerable<Book> GetCatalog()`, `IEnumerable<Book> GetCatalog(Type type)` et `Book FindBook(int id)` qui utiliseront le `BookRepository`.
 
 Ces méthodes vont utiliser les Repository que vous avez créé. Remplacez les méthodes de votre `Main` par les méthodes nouvellement créées dans votre `CatalogManager`.
 
@@ -151,20 +151,20 @@ Ajoutez dans le `Program.cs` la méthode :
 ```
 
 Il s'agit ici d'un concept extrêmement important lors du développement d'une application aujourd'hui.
-On ne développe non plus à partir de classes concrètes mais à partir d'interfaces afin de réduire le couplage de vos applications à l'implémentation.
+On ne développe plus à partir de classes concrètes mais à partir d'interfaces afin de réduire le couplage de vos applications à l'implémentation.
 
 L’injection de dépendances consiste, pour une classe, à déléguer la création de ses dépendances au code appelant qui va ensuite les injecter dans la classe correspondante. De ce fait, la création d’une instance est effectuée à l’extérieur de la classe dépendante et injectée dans celle-ci.
 
 ![Dependency Injection](/schemas/dependancy_injection.drawio.png)
 
-Par exemple, nous possédons une classe concrète `ApiBCaller` que j'instancie à plusieurs endroits dans mon code. 
-Demain, on nous demande de la remplacer par un `ApiBCaller` car la source de doit changer.
-Plutôt que d'avoir à changer toutes références à notre classe concrète, nous allons mettre dans le constructeur notre interface qui vous donnera les fonctions disponibles.
+Par exemple, nous possédons une classe concrète `ApiACaller` que j'instancie à plusieurs endroits dans mon code.
+Demain, on nous demande de la remplacer par un `ApiBCaller` car la source de données doit changer.
+Plutôt que d'avoir à changer toutes les références à notre classe concrète, nous allons mettre dans le constructeur notre interface qui vous donnera les fonctions disponibles.
 Et à plus haut niveau, nous lui injecterons la classe concrète qui correspondera à cette interface.
 
 A la compilation, la classe concrète correspondante est inconnue. Par contre, à l'exécution, cette classe est injectée à chaque fois qu'une référence est faite à celle-ci via l'interface.
 
-De ce fait, lorsque que nous changerons l'implémentation via une nouvelle classe, nous aurons juste besoin de changer la configuration correspondante.
+De ce fait, lorsque nous changerons l'implémentation via une nouvelle classe, nous aurons juste besoin de changer la configuration correspondante.
 
 ```cs
   public interface IApiCaller {
@@ -206,7 +206,7 @@ En allant plus loin, on peut récupérer toutes vos classes de cette manière :
     _c = c;
   }
 
- // Où encore une autre classe qui a les deux objets accessibles
+ // Ou encore une autre classe qui a les deux objets accessibles
 
   public ClassE(IClassA a, IClassD d ) {
     _a = a;
@@ -224,7 +224,7 @@ Pour réaliser de l'injection de dépendance :
 - Extrayez une interface de vos classes concrètes ayant de la logique et instanciées ailleurs dans votre code (Ex : Services...)
 - Pour vos repository, on fera un peu différemment. Vous allez créer une seule interface `IGenericRepository<T>` qui prendra en paramètre un type générique `T` qui sera une `IEntity` et qui vous servira pour vos types de retours
 - Injectez vos dépendances dans la configuration de vos services de votre `Program.cs`
-- Utilisez ces classes injectéss en retirant les appels inutiles à vos classes concrètes 
+- Utilisez ces classes injectées en retirant les appels inutiles à vos classes concrètes 
 
 Récupérez votre Service dans le `Main` et testez en reprenant l'exemple du `IApiCaller` :
 
@@ -237,7 +237,7 @@ Pour plus d'informations :
 - [Injection de dépendance - Microsoft](https://learn.microsoft.com/fr-fr/aspnet/core/fundamentals/dependency-injection?view=aspnetcore-8.0)
 - [Classes et méthodes générique - Microsoft](https://learn.microsoft.com/fr-fr/dotnet/csharp/fundamentals/types/generics)
 
-⚠️ Testez votre code et pensez à commit.
+⚠️ Testez votre code et pensez à commiter.
 
 ### Etape 6 : EntityFramework
 ---
@@ -253,18 +253,18 @@ Dans votre `DataAccessLayer`, créez un dossier `Contexts` et un fichier `Librar
 Pensez à l'injecter, pour une fois on utilisera une classe concrète. Vous aurez sûrement un autre Nuget à récupérer sur vos deux projets.
 
 ```cs
-\\ Dans la configuration du service
+// Dans la configuration du service
   services.AddDbContext<LibraryContext>();
 
-\\ Dans la configuration de votre LibraryContext 
+// Dans la configuration de votre LibraryContext 
   options.UseSqlite("Data Source={path};");
 ```
 
 Vous pouvez construire un chemin absolu avec l'aide de la classe `Path`. **Faites en sorte que le fichier `.db` soit copié à la compilation.**
 
-Dans vos respositories, utilisez le `LibraryContext` injecté pour récupérer le contenu de la base.
+Dans vos repositories, utilisez le `LibraryContext` injecté pour récupérer le contenu de la base.
 
-Ajoutez une méthode `IEntity Add(IEntity)` dans `IGenericRepository`. Compilez et debuggez.
+Ajoutez une méthode `IEntity Add(IEntity)` dans `IGenericRepository`. Compilez et déboguez.
 
 Vous réalisez à quel point c'est fastidieux de tout changer à la fois.
 
@@ -276,24 +276,24 @@ Pour plus d'informations :
 - [EntityFramework - Microsoft](https://learn.microsoft.com/fr-fr/ef/core/)
 - [DBeaver](https://dbeaver.io/) qui est vraiment utile quand vous avez plusieurs SGBD différents à gérer.
 
-⚠️ Testez votre code et pensez à commit.
+⚠️ Testez votre code et pensez à commiter.
 
 ### Etape 7 : TU
 ---
 
 Créez un dossier `Tests` à la racine de votre solution et un nouveau projet `Services.Test` dans ce dossier.
-Créez une classe `CatalogServiceTest`.
+Créez une classe `CatalogManagerTest`.
 
-Implémentez un test unitaire sur chaque méthode de votre `CatalogService` en pensant à Mock le retour de votre `Repository` pour bien tester unitairement votre méthode.
+Implémentez un test unitaire sur chaque méthode de votre `CatalogManager` en pensant à Mock le retour de votre `Repository` pour bien tester unitairement votre méthode.
 
 Pour plus d'informations : [TU avec C# - Microsoft](https://learn.microsoft.com/fr-fr/dotnet/core/testing/unit-testing-with-dotnet-test)
 
-⚠️ Testez votre code et pensez à commit.
+⚠️ Testez votre code et pensez à commiter.
 
 ### Etape 8 : API
 ---
 
-On va maintenant mettre en place une API. Pour rappel, une API est une interface logiciel sur laquel vous pourrez vous connecter et récupérer des informations via requête HTTP. Elle vous renverra un résultat sous la forme d'un JSON.
+On va maintenant mettre en place une API. Pour rappel, une API est une interface logicielle sur laquelle vous pourrez vous connecter et récupérer des informations via requête HTTP. Elle vous renverra un résultat sous la forme d'un JSON.
 
 Pour cela, vous allez créer un nouveau projet de type `ASP.NET Core WebAPI`, sans authentification que vous allez appeler `LibraryManager.Hosting`.
 
@@ -312,7 +312,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 /*
-Les Middleware ajoutés avant le builder seront récupérer par l'application
+Les Middleware ajoutés avant le builder seront récupérés par l'application
 */
 
 var app = builder.Build();
@@ -374,13 +374,13 @@ namespace API.Controllers
     }
 }
 ```
-Les éléments entre crochets sont appelés des attributs. Ils définissent des métadonnées qui sont lisible durant l'exécution.
+Les éléments entre crochets sont appelés des attributs. Ils définissent des métadonnées qui sont lisibles durant l'exécution.
 
 Donc pour accéder à cette API, nous utiliserons `GET localhost:53000/WeatherForecast`. Il existe même des attributs pour l'authentification.
 
 Après l'explication, place à la pratique.
 
-Créez un fichier `BookController` qui va comprendre les méthodes *GET* suivants :
+Créez un fichier `BookController` qui va comprendre les méthodes *GET* suivantes :
 - books
 - book/{id}
 - books/{type}
@@ -390,18 +390,18 @@ Créez un fichier `BookController` qui va comprendre les méthodes *GET* suivant
 
 Implémentez les méthodes manquantes.
 
-Faîtes en sortes d'afficher l'`Author` correspondant à votre `Book`.
+Faites en sorte d'afficher l'`Author` correspondant à votre `Book`.
 
 Pour tester votre API, installez [Postman](https://www.postman.com/).
 
 Pour plus d'informations : [Tutoriel ASP.NET Core Web API- Microsoft](https://learn.microsoft.com/fr-fr/aspnet/core/tutorials/first-web-api?view=aspnetcore-8.0&tabs=visual-studio)
 
-⚠️ Testez votre code et pensez à commit.
+⚠️ Testez votre code et pensez à commiter.
 
 ### Etape 9 : Limiter l'accès aux données
 ---
 
-Dans votre projet `BusinessObject`, créez un dossier `DataTransfertObject`.
+Dans votre projet `BusinessObjects`, créez un dossier `DataTransfertObject`.
 Dans celui-ci, vous pouvez créer un `BookDto`. 
 
 Un DTO est une version de l'objet qui sera à destination de l'extérieur de votre application, cela peut être utile pour limiter les données accessibles aux clients de votre API.
@@ -412,7 +412,7 @@ Faites en sorte que les `Book`s fournis par votre `CatalogManager` soient conver
 
 Chacun de vos `Controller`s doivent utiliser et renvoyer des `BookDto`.
 
-⚠️ Testez votre code et pensez à commit.
+⚠️ Testez votre code et pensez à commiter.
 
 
 ### Etape 10 : WIP
@@ -420,7 +420,7 @@ Chacun de vos `Controller`s doivent utiliser et renvoyer des `BookDto`.
 
 
 
-⚠️ Testez votre code et pensez à commit.
+⚠️ Testez votre code et pensez à commiter.
 
 ## Raccourcis utiles 
 ---
