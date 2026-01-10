@@ -100,13 +100,13 @@ Créez une classe `Book` qui contiendra uniquement un `string Name` et un `strin
 - En C#, on utilise des propriétés auto-implémentées :
 
 ```cs
-public class Book
+public class Item
 {
     // Propriété auto-implémentée avec getter et setter
-    public string Name { get; set; }
+    public string Title { get; set; }
     
     // Raccourci : tapez "prop" puis Tab pour générer une propriété
-    public string Type { get; set; }
+    public string Category { get; set; }
 }
 ```
 
@@ -117,38 +117,20 @@ Dans cette méthode, vous allez créer une liste de livres que vous allez alimen
 static void Main(string[] args)
 {
     // List<T> est une collection générique qui peut contenir plusieurs éléments du type T
-    List<Book> books = new List<Book>
+    List<Item> items = new List<Item>
     {
-        new Book { Name = "Le Comte de Monte Cristo", Type = "Aventure" },
-        new Book { Name = "Les Trois Mousquetaires", Type = "Aventure" },
-        new Book { Name = "Le Petit Prince", Type = "Fiction" }
+        new Item { Title = "Item 1", Category = "CategoryA" },
+        new Item { Title = "Item 2", Category = "CategoryA" },
+        new Item { Title = "Item 3", Category = "CategoryB" }
     };
     
     // Alternative : Initialisation puis ajout
-    // List<Book> books = new List<Book>();
-    // books.Add(new Book { Name = "...", Type = "..." });
+    // List<Item> items = new List<Item>();
+    // items.Add(new Item { Title = "...", Category = "..." });
 }
 ```
 
 Vous allez ensuite boucler sur celle-ci et afficher dans la console les différents noms.
-
-**Explication : Les boucles en C#**
-```cs
-// Méthode 1 : Boucle foreach (la plus lisible pour parcourir une collection)
-foreach (Book book in books)
-{
-    Console.WriteLine(book.Name);
-}
-
-// Méthode 2 : Boucle for classique
-for (int i = 0; i < books.Count; i++)
-{
-    Console.WriteLine(books[i].Name);
-}
-
-// Méthode 3 : Méthode LINQ ForEach (plus avancé)
-books.ForEach(book => Console.WriteLine(book.Name));
-```
 
 ⚠️ Testez votre code et pensez à commiter.
 
@@ -169,65 +151,65 @@ LINQ (prononcé "link", pour **L**anguage **IN**tegrated **Q**uery) est un langa
 
 1. **Syntaxe par méthodes** (recommandée pour ce projet) :
 ```cs
-var adventureBooks = books.Where(book => book.Type == "Aventure");
+var categoryAItems = items.Where(item => item.Category == "CategoryA");
 ```
 
 2. **Syntaxe par requête** (ressemble au SQL) :
 ```cs
-var adventureBooks = from book in books
-                     where book.Type == "Aventure"
-                     select book;
+var categoryAItems = from item in items
+                     where item.Category == "CategoryA"
+                     select item;
 ```
 
 **Principales méthodes LINQ :**
 
 ```cs
 // Where : Filtre les éléments selon une condition
-var adventureBooks = books.Where(b => b.Type == "Aventure");
+var categoryAItems = items.Where(i => i.Category == "CategoryA");
 
 // Select : Transforme/projette les éléments
-var bookNames = books.Select(b => b.Name);
+var itemTitles = items.Select(i => i.Title);
 
 // FirstOrDefault : Récupère le premier élément (ou null si vide)
-var firstBook = books.FirstOrDefault();
+var firstItem = items.FirstOrDefault();
 
 // OrderBy : Trie par ordre croissant
-var sortedBooks = books.OrderBy(b => b.Name);
+var sortedItems = items.OrderBy(i => i.Title);
 
 // Count : Compte le nombre d'éléments
-int count = books.Count(b => b.Type == "Aventure");
+int count = items.Count(i => i.Category == "CategoryA");
 
 // Any : Vérifie si au moins un élément correspond
-bool hasAdventure = books.Any(b => b.Type == "Aventure");
+bool hasCategoryA = items.Any(i => i.Category == "CategoryA");
 
 // ToList : Convertit le résultat en List<T>
-List<Book> adventureList = books.Where(b => b.Type == "Aventure").ToList();
+List<Item> categoryAList = items.Where(i => i.Category == "CategoryA").ToList();
 ```
 
 **Exercice : Filtrez votre liste pour n'afficher que les livres de type `Aventure`.**
 
 ```cs
 // Méthode 1 : Filtrer puis afficher
-var adventureBooks = books.Where(book => book.Type == "Aventure");
-foreach (var book in adventureBooks)
+var categoryAItems = items.Where(item => item.Category == "CategoryA");
+foreach (var item in categoryAItems)
 {
-    Console.WriteLine($"Livre d'aventure : {book.Name}");
+    Console.WriteLine($"Item de CategoryA : {item.Title}");
 }
 
 // Méthode 2 : Tout en une ligne (chaînage de méthodes)
-books.Where(book => book.Type == "Aventure")
+items.Where(item => item.Category == "CategoryA")
      .ToList()
-     .ForEach(book => Console.WriteLine(book.Name));
+     .ForEach(item => Console.WriteLine(item.Title));
 ```
 
 **Note importante :** 
 - `=>` est appelé un **lambda** ou **expression lambda** : c'est une fonction anonyme
-- `book => book.Type == "Aventure"` signifie : "pour chaque livre, vérifie si son type est Aventure"
+- `item => item.Category == "CategoryA"` signifie : "pour chaque item, vérifie si sa catégorie est CategoryA"
 - C'est équivalent à écrire :
 ```cs
-bool IsAdventure(Book book)
+bool IsCategoryA(Item item)
 {
-    return book.Type == "Aventure";
+    return item.Category == "CategoryA";
 }
 ```
 
@@ -286,34 +268,27 @@ Déplacez-y votre classe `Book` que vous compléterez et changez votre `string T
 
 **Exemple d'énumération :**
 ```cs
-// Fichier: Enum/TypeBook.cs
-public enum TypeBook
+public enum EnumName
 {
-    Aventure,
-    Fiction,
-    Enseignement,
-    Histoire,
-    Juridique
+    Value1,
+    Value2
 }
 ```
 
 **Exemple d'entité complète :**
 ```cs
-// Fichier: Entity/Book.cs
-public class Book : IEntity
+public class Entity
 {
     public int Id { get; set; }
-    public string Name { get; set; }
-    public int Pages { get; set; }
-    public TypeBook Type { get; set; }
+    public EnumName Type { get; set; }
     public int Rate { get; set; }
     
-    // Relation OneToMany : Un livre a UN auteur
-    public int IdAuthor { get; set; }
-    public Author Author { get; set; }  // Propriété de navigation
+    // Relation OneToMany : 1..1 en base de données
+    public int ExternalId { get; set; }
+    public ExternalEntity ExternalEntity { get; set; }  // Propriété de navigation
     
-    // Relation ManyToMany : Un livre peut être dans plusieurs bibliothèques
-    public IEnumerable<Library> Libraries { get; set; }
+    // Relation ManyToMany : 1..* en base de données
+    public IEnumerable<ExternalEntity> ExternalEntities { get; set; }
 }
 ```
 
@@ -321,19 +296,11 @@ Faites en sorte que toutes les entités héritent d'une interface `IEntity` qui 
 
 **Explication : Pourquoi une interface IEntity ?**
 ```cs
-// Fichier: Entity/IEntity.cs
-public interface IEntity
-{
-    int Id { get; set; }
-}
-
 // Avantages :
 // - Permet de créer des méthodes génériques qui fonctionnent avec toute entité
 // - Garantit que toutes les entités ont un Id
 // - Facilite la création de Repository génériques (étape suivante)
 ```
-
-Dans le cadre d'une relation `OneToMany` (1..\*) ou `ManyToMany` (\*), le **Many** se manifeste sous la forme d'une liste (Ex : `IEnumerable<ClassA>`) et le **One** sous la forme d'un objet simple (Ex : `ClassA`).
 
 **Schéma des relations :**
 ```
@@ -352,35 +319,24 @@ Dans votre projet `DataAccessLayer`, créez un dossier `Repository`, puis dans c
 - Permet d'isoler la logique d'accès aux données
 - Facilite les tests (on peut créer un faux repository pour tester)
 
-Vous y créerez les méthodes `GetAll()` qui retournera un `IEnumerable<Book>` et `Get(int id)` qui retournera un `Book`, vous pouvez `return` des objets vides à ce stade.
+Vous y créerez les méthodes :
+- `IEnumerable<Book> GetAll()`
+- `Book Get(int id)` 
 
 **Exemple de Repository :**
 ```cs
-// Fichier: Repository/BookRepository.cs
-public class BookRepository
+public class ItemRepository
 {
-    private List<Book> _books;
+    private List<Item> _books;
 
     public BookRepository()
     {
         // Pour l'instant, données en dur
-        _books = new List<Book>
+        _books = new List<Item>
         {
-            new Book { Id = 1, Name = "Le Comte de Monte Cristo", Type = TypeBook.Aventure },
-            new Book { Id = 2, Name = "Les Trois Mousquetaires", Type = TypeBook.Aventure }
+            new Item { Id = 1, Title = "" },
+            new Item { Id = 2, Title = "" }
         };
-    }
-
-    // Retourne tous les livres
-    public IEnumerable<Book> GetAll()
-    {
-        return _books;
-    }
-
-    // Retourne un livre par son Id
-    public Book Get(int id)
-    {
-        return _books.FirstOrDefault(b => b.Id == id);
     }
 }
 ```
@@ -413,55 +369,39 @@ App → Services → DataAccessLayer → BusinessObjects
 - `Services` : Couche services intermédiaire; va permettre d'orchestrer les besoins et de relier d'autres couches entre elles
 
 **Explication : La couche Service**
-- La couche **Service** contient la **logique métier** de l'application
 - Elle orchestre les appels aux repositories
 - Elle peut combiner les données de plusieurs repositories
-- Elle expose des méthodes orientées "métier" plutôt que "technique"
 
 **Exemple de différence Repository vs Service :**
 ```cs
 // Repository : Méthodes techniques d'accès aux données
-BookRepository.GetAll() → Retourne tous les livres de la BD
-BookRepository.Get(id)  → Retourne un livre par son ID
+ItemRepository.GetAll() → Retourne tous les livres de la BD
+ItemRepository.Get(id)  → Retourne un livre par son ID
 
 // Service : Méthodes orientées métier
-CatalogManager.GetCatalog()           → Retourne le catalogue complet
-CatalogManager.GetCatalog(Type type)  → Filtre par type (logique métier)
-CatalogManager.FindBook(int id)       → Recherche intelligente
+ItemManager.GetCatalog()           → Retourne le catalogue complet
+ItemManager.GetCatalog(Type type)  → Filtre par type (logique métier)
+ItemManager.FindBook(int id)       → Recherche intelligente
 ```
 
-4. Dans votre projet `Services`, créez un dossier `Services`, puis dans ce dossier une classe `CatalogManager` qui contiendra les méthodes `IEnumerable<Book> GetCatalog()`, `IEnumerable<Book> GetCatalog(Type type)` et `Book FindBook(int id)` qui utiliseront le `BookRepository`.
+4. Dans votre projet `Services`, créez un dossier `Services`, puis dans ce dossier une classe `CatalogManager` qui contiendra les méthodes :
+- `IEnumerable<Book> GetCatalog()`
+- `IEnumerable<Book> GetCatalog(Type type)` 
+- `Book FindBook(int id)` 
+
+Elles utiliseront le `BookRepository` pour accéder et retourner des données.
 
 **Exemple d'implémentation du CatalogManager :**
 ```cs
 // Fichier: Services/CatalogManager.cs
-public class CatalogManager
+public class ItemManager
 {
-    private readonly BookRepository _bookRepository;
+    private readonly ItemRepository _itemRepository;
 
     // Le repository est passé dans le constructeur
-    public CatalogManager(BookRepository bookRepository)
+    public ItemManager()
     {
-        _bookRepository = bookRepository;
-    }
-
-    // Retourne tous les livres du catalogue
-    public IEnumerable<Book> GetCatalog()
-    {
-        return _bookRepository.GetAll();
-    }
-
-    // Retourne les livres filtrés par type (logique métier)
-    public IEnumerable<Book> GetCatalog(TypeBook type)
-    {
-        return _bookRepository.GetAll()
-                              .Where(book => book.Type == type);
-    }
-
-    // Recherche un livre par son ID
-    public Book FindBook(int id)
-    {
-        return _bookRepository.Get(id);
+        _repository = new ItemRepository();
     }
 }
 ```
@@ -473,20 +413,27 @@ Ces méthodes vont utiliser les Repositories que vous avez créés. Remplacez le
 static void Main(string[] args)
 {
     // Création manuelle des dépendances (sera remplacé par l'injection plus tard)
-    BookRepository bookRepository = new BookRepository();
-    CatalogManager catalogManager = new CatalogManager(bookRepository);
+    ItemManager itemManager = new ItemManager();
     
     // Utilisation du service
-    var allBooks = catalogManager.GetCatalog();
-    var adventureBooks = catalogManager.GetCatalog(TypeBook.Aventure);
-    var specificBook = catalogManager.FindBook(1);
+    var allItems = itemManager.GetItems();
+    var filteredItems = itemManager.GetItems(EnumName.Value1);
+    var itemFounded = itemManager.FindItem(1);
     
     // Affichage
-    Console.WriteLine("Livres d'aventure :");
-    foreach (var book in adventureBooks)
+    Console.WriteLine("All Items :");
+    foreach (var item in allItems)
     {
-        Console.WriteLine($"- {book.Name}");
+        Console.WriteLine($"- {item.Title}");
     }
+    
+    Console.WriteLine("All Items :");
+    foreach (var item in filteredItems)
+    {
+        Console.WriteLine($"- {item.Title}");
+    }
+    
+    Console.WriteLine($"All Items : {itemFounded.Title}");
 }
 ```
 
@@ -502,13 +449,13 @@ L'injection de dépendance (DI - Dependency Injection) est un concept fondamenta
 
 **Le problème sans injection de dépendance :**
 ```cs
-public class CatalogManager
+public class ItemManager
 {
-    private BookRepository _repository;
+    private ItemRepository _repository;
     
-    public CatalogManager()
+    public ItemManager()
     {
-        _repository = new BookRepository();  // ❌ Couplage fort !
+        _repository = new ItemRepository();  // ❌ Couplage fort !
     }
 }
 
@@ -520,11 +467,11 @@ public class CatalogManager
 
 **La solution avec injection de dépendance :**
 ```cs
-public class CatalogManager
+public class ItemManager
 {
-    private readonly IBookRepository _repository;
+    private readonly ItemRepository _repository;
     
-    public CatalogManager(IBookRepository repository)  // ✅ Injection via constructeur
+    public ItemManager(ItemRepository repository)  // ✅ Injection via constructeur
     {
         _repository = repository;
     }
@@ -536,7 +483,7 @@ public class CatalogManager
 // - La classe ne gère plus ses dépendances
 ```
 
-Ajoutez dans le `Program.cs` la méthode :
+Après avoir fait évoluer votre `CatalogManager` en suivant l'exemple ci-dessus, ajoutez dans le `Program.cs` la méthode suivante :
 
 ```cs
     private static IHost CreateHostBuilder()
@@ -544,101 +491,30 @@ Ajoutez dans le `Program.cs` la méthode :
         return Host.CreateDefaultBuilder()
             .ConfigureServices(services =>
             {
-              // Configuration des services
+              services.AddSingleton<ItemRepository>();
+              services.AddScoped<ItemManager>();
             })
             .Build();
     }
 ```
 
-Il s'agit ici d'un concept extrêmement important lors du développement d'une application aujourd'hui.
-On ne développe plus à partir de classes concrètes mais à partir d'interfaces afin de réduire le couplage de vos applications à l'implémentation.
-
-L’injection de dépendances consiste, pour une classe, à déléguer la création de ses dépendances au code appelant qui va ensuite les injecter dans la classe correspondante. De ce fait, la création d’une instance est effectuée à l’extérieur de la classe dépendante et injectée dans celle-ci.
-
-![Dependency Injection](/schemas/dependancy_injection.drawio.png)
-
-Par exemple, nous possédons une classe concrète `ApiACaller` que j'instancie à plusieurs endroits dans mon code.
-Demain, on nous demande de la remplacer par un `ApiBCaller` car la source de données doit changer.
-Plutôt que d'avoir à changer toutes les références à notre classe concrète, nous allons mettre dans le constructeur notre interface qui nous donnera les fonctions disponibles.
-Et à plus haut niveau, nous lui injecterons la classe concrète qui correspondera à cette interface.
-
-A la compilation, la classe concrète correspondante est inconnue. Par contre, à l'exécution, cette classe est injectée à chaque fois qu'une référence est faite à celle-ci via l'interface.
-
-De ce fait, lorsque nous changerons l'implémentation via une nouvelle classe, nous aurons juste besoin de changer la configuration correspondante.
+Ajouter la méthode à votre méthode Main() :
 
 ```cs
-  public interface IApiCaller {
-    object Call();
-  }
-
-  public class ApiACaller : IApiCaller {
-    public object Call() {
-      return ResultA;
-    }
-  }
-
-  public class ApiBCaller : IApiCaller {
-    public object Call() {
-      return ResultB;
-    }
-  }
-
-  // Before - Couplage fort ❌
-  public Constructor() {
-    _caller = new ApiACaller();
-  }
-
-  // After - Injection de dépendance ✅
-  public Constructor(IApiCaller apiCaller) {
-    _caller = apiCaller;
-  }
+static void Main(string[] args) 
+{
+    var host = CreateHostBuilder();
+    using var serviceScope = host.Services.CreateScope();
+    var services = serviceScope.ServiceProvider; 
+    // Récupération du service configuré
+    ItemManager itemManager = services.GetRequiredService<ItemManager>(); 
+    // ...
+}
 ```
 
-**Les cycles de vie des services injectés :**
+En réalisant toutes ces manipulations, nous avons délégué l'instanciation de nos différentes classes au Builder intégré à votre application .NET et centralisé le tout au sein de la configuration des services.
 
-```cs
-// 1. Transient : Une nouvelle instance à chaque injection
-services.AddTransient<IApiCaller, ApiACaller>();
-// Utilisation : Services stateless, légers
-
-// 2. Scoped : Une instance par requête/scope
-services.AddScoped<IApiCaller, ApiACaller>();
-// Utilisation : DbContext, services liés à une requête web
-
-// 3. Singleton : Une seule instance pour toute l'application
-services.AddSingleton<IApiCaller, ApiACaller>();
-// Utilisation : Cache, configuration, services sans état partagés
-```
-
-En allant plus loin, on peut récupérer toutes vos classes de cette manière :
-
-```cs
-
-  public ClassA(IClassB b){
-    _b = b;
-  }
-
-  public ClassB(IClassC c){
-    _c = c;
-  }
-
- // Ou encore une autre classe qui a les deux objets accessibles
-
-  public ClassE(IClassA a, IClassD d ) {
-    _a = a;
-    _d = d;
-  }
-
-  // Et ainsi de suite
-```
-
-Et comme vous le constatez, je n'ai à aucun moment instancié la classe de départ. (rappel : on instancie avec le mot-clé `new`, par exemple `new ClassA()`) 
-
-On peut même injecter un Singleton ! Renseignez-vous sur la documentation pour connaître les cycles de vie des objets injectés. 
-
-**Mise en pratique :**
-
-Pour réaliser de l'injection de dépendance :
+On peut aller encore plus loin.
 
 1. **Extrayez une interface de vos classes concrètes** ayant de la logique et instanciées ailleurs dans votre code (Ex : Services...)
 
@@ -646,14 +522,13 @@ Pour réaliser de l'injection de dépendance :
 // Exemple pour CatalogManager :
 // Clic droit sur le nom de la classe > Actions rapides > Extraire l'interface
 
-public interface ICatalogManager
+public interface IItemManager
 {
-    IEnumerable<Book> GetCatalog();
-    IEnumerable<Book> GetCatalog(TypeBook type);
-    Book FindBook(int id);
+    IEnumerable<Item> GetItems();
+    // etc...
 }
 
-public class CatalogManager : ICatalogManager
+public class ItemManager : IItemManager
 {
     // Implémentation...
 }
@@ -675,7 +550,7 @@ public interface IGenericRepository<T> where T : IEntity
 // IGenericRepository<Author> → GetAll() retourne IEnumerable<Author>
 
 // Implémentation pour Book :
-public class BookRepository : IGenericRepository<Book>
+public class ItemRepository : IGenericRepository<Item>
 {
     public IEnumerable<Book> GetAll() { /* ... */ }
     public Book Get(int id) { /* ... */ }
@@ -691,11 +566,10 @@ private static IHost CreateHostBuilder()
         .ConfigureServices(services =>
         {
             // Enregistrement des repositories
-            services.AddTransient<IGenericRepository<Book>, BookRepository>();
-            services.AddTransient<IGenericRepository<Author>, AuthorRepository>();
+            services.AddTransient<IGenericRepository<Item>, ItemRepository>();
             
             // Enregistrement des services
-            services.AddTransient<ICatalogManager, CatalogManager>();
+            services.AddTransient<IItemManager, ItemManager>();
         })
         .Build();
 }
@@ -724,20 +598,85 @@ static void Main(string[] args)
 }
 ```
 
+**Pourquoi avoir remplacé les classes concrètes par des interfaces ?**
+
+Nous avons cassé le lien entre l'implémentation (l'action) et la définition (la possibilité).
+
+Concrètement, l'interface permet à la classe appelante de connaître l'existence d'une méthode et son retour, mais pas la manière dont elle est implémentée.
+
+**Les avantages principaux :**
+
+1. **Testabilité** : On peut facilement créer des "faux" services (mocks) pour tester notre code
+   ```cs
+   // En test, on peut remplacer le vrai repository par un faux
+   services.AddTransient<IGenericRepository<Item>, FakeItemRepository>();
+   ```
+
+2. **Flexibilité** : On peut changer l'implémentation sans modifier le code qui l'utilise
+   ```cs
+   // Passage d'une implémentation en mémoire...
+   services.AddTransient<IGenericRepository<Item>, InMemoryItemRepository>();
+   
+   // ...à une implémentation avec base de données (aucun changement dans ItemManager !)
+   services.AddTransient<IGenericRepository<Item>, DatabaseItemRepository>();
+   ```
+
+3. **Découplage** : Les classes ne dépendent plus d'implémentations concrètes mais d'abstractions
+   - `ItemManager` ne sait pas s'il utilise un repository en mémoire ou en base de données
+   - Il connaît juste les méthodes disponibles via `IGenericRepository<Item>`
+   - C'est le **Principe d'Inversion de Dépendance** (SOLID)
+
+4. **Maintenabilité** : Facilite l'ajout de nouvelles implémentations sans casser le code existant
+   ```cs
+   // On peut ajouter une nouvelle implémentation sans toucher à ItemManager
+   public class CachedItemRepository : IGenericRepository<Item>
+   {
+       // Nouvelle implémentation avec cache
+   }
+   ```
+
+**Exemple concret de la différence :**
+
+```cs
+// ❌ AVANT : Dépendance forte (couplage fort)
+public class ItemManager
+{
+    private ItemRepository _repository;
+    
+    public ItemManager()
+    {
+        _repository = new ItemRepository(); // Création directe = couplage fort
+    }
+    // Impossible de changer ItemRepository sans modifier ItemManager
+}
+
+// ✅ APRÈS : Dépendance faible (couplage faible)
+public class ItemManager
+{
+    private IGenericRepository<Item> _repository;
+    
+    public ItemManager(IGenericRepository<Item> repository)
+    {
+        _repository = repository; // Reçu de l'extérieur = couplage faible
+    }
+    // On peut injecter n'importe quelle implémentation de IGenericRepository<Item>
+}
+```
+
 **Résumé du flux d'injection :**
 ```
 1. Configuration (Program.cs) :
-   services.AddTransient<ICatalogManager, CatalogManager>()
-   services.AddTransient<IGenericRepository<Book>, BookRepository>()
+   services.AddTransient<IItemManager, ItemManager>()
+   services.AddTransient<IGenericRepository<Item>, ItemRepository>()
 
 2. Le conteneur DI sait maintenant que :
-   - ICatalogManager → CatalogManager
-   - IGenericRepository<Book> → BookRepository
+   - IItemManager → ItemManager
+   - IGenericRepository<Item> → ItemRepository
 
-3. Quand on demande ICatalogManager :
-   - Le conteneur crée automatiquement BookRepository
-   - Puis crée CatalogManager en lui injectant BookRepository
-   - Retourne l'instance de CatalogManager
+3. Quand on demande IItemManager :
+   - Le conteneur crée automatiquement ItemRepository
+   - Puis crée ItemManager en lui injectant ItemRepository
+   - Retourne l'instance de ItemManager
 
 4. Tout est automatique, pas de "new" manuel !
 ```
