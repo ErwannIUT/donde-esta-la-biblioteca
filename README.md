@@ -114,19 +114,21 @@ Dans cette méthode, vous allez créer une liste de livres que vous allez alimen
 
 **Exemple de code :**
 ```cs
-static void Main(string[] args)
-{
-    // List<T> est une collection générique qui peut contenir plusieurs éléments du type T
-    List<Item> items = new List<Item>
+public class Program {
+    static void Main(string[] args)
     {
-        new Item { Title = "Item 1", Category = "CategoryA" },
-        new Item { Title = "Item 2", Category = "CategoryA" },
-        new Item { Title = "Item 3", Category = "CategoryB" }
-    };
-    
-    // Alternative : Initialisation puis ajout
-    // List<Item> items = new List<Item>();
-    // items.Add(new Item { Title = "...", Category = "..." });
+        // List<T> est une collection générique qui peut contenir plusieurs éléments du type T
+        List<Item> items = new List<Item>
+        {
+            new Item { Title = "Item 1", Category = "CategoryA" },
+            new Item { Title = "Item 2", Category = "CategoryA" },
+            new Item { Title = "Item 3", Category = "CategoryB" }
+        };
+        
+        // Alternative : Initialisation puis ajout
+        // List<Item> items = new List<Item>();
+        // items.Add(new Item { Title = "...", Category = "..." });
+    }
 }
 ```
 
