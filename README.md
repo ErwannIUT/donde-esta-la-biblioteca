@@ -800,6 +800,8 @@ Ajoutez une méthode `IEntity Add(IEntity)` dans `IGenericRepository`. Compilez 
 
 Vous réalisez à quel point c'est fastidieux de tout changer à la fois.
 
+Ajouter dans votre `IGenericRepository` la méthode `IEnumerable<T> GetMultiple(Func<T, bool>? filter)`.
+
 Maintenant créez une classe concrète `GenericRepository<T>` qui doit remplacer tous vos repositories existants et remplacez les injections.
 
 **Exemple de GenericRepository :**
@@ -830,6 +832,11 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class, IEnti
         _dbSet.Add(entity);
         _context.SaveChanges();
         return entity;
+    }
+
+    public IEnumerable<T> GetMultiple(Func<T, bool>? filter)
+    {
+        return _dbSet.Where(filter);
     }
 }
 ```
