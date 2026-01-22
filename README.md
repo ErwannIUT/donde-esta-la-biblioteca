@@ -800,7 +800,7 @@ Ajoutez une méthode `IEntity Add(IEntity)` dans `IGenericRepository`. Compilez 
 
 Vous réalisez à quel point c'est fastidieux de tout changer à la fois.
 
-Ajouter dans votre `IGenericRepository` la méthode `IEnumerable<T> GetMultiple(Func<T, bool>? filter)`.
+Ajouter dans votre `IGenericRepository` la méthode `IEnumerable<T> GetMultiple(Func<T, bool>? filter = null, params string[] includes)`.
 
 Maintenant créez une classe concrète `GenericRepository<T>` qui doit remplacer tous vos repositories existants et remplacez les injections.
 
@@ -834,11 +834,21 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class, IEnti
         return entity;
     }
 
-    public IEnumerable<T> GetMultiple(Func<T, bool>? filter)
+
+    public IEnumerable<T> GetMultiple(Func<T, bool>? filter = null, params string[] includes)
     {
-        return _dbSet.Where(filter);
-    }
-}
+            IQueryable<T> query = _dbSet;
+            foreach (var include in includes)
+            {
+                query = query.Include(include);
+            }
+            if (filter != null)
+            {
+                return query.AsEnumerable().Where(filter);
+            }
+
+            return query.ToList();
+     }
 ```
 
 **Configuration dans Program.cs :**
