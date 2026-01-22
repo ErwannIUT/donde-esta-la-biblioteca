@@ -1076,6 +1076,14 @@ Créez un fichier `BookController` qui va comprendre les méthodes suivantes :
 - `GET /books/top-rated` : Récupère le livre le mieux noté
 - `DELETE /books/{id}` : Supprime un livre
 
+Modifier l'appel à `AddController()` dans `Program.cs` de votre WebAPI :
+```cs
+builder.Services.AddControllers().AddJsonOptions(options =>
+{
+    options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
+});
+```
+
 Pour pouvoir tester ces routes plus simplememnt, vous pouvez ajouter ces lignes dans votre `Program.cs`
 ```cs
 builder.Services.AddSwaggerGen(c => {
