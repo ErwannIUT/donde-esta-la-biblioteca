@@ -1205,6 +1205,17 @@ Chacun de vos `Controller`s doivent utiliser et renvoyer des `BookDto`.
 
 ⚠️ Testez votre code et pensez à commiter.
 
+### Etape 10 : Recherche flexible 
+---
+
+En vous servant de vos connaissances acquises, ajouter un endpoint `/filteredBooks` qui retournera un Dto `BookAuthorDto` qui contiendra les mêmes infos que `BookDto` en y ajoutant les données d'`Author` et de `Library` sauf les `Id`s.
+
+Ce endpoint doit être capable de filtrer sur le `Type` ou le `Nom` / `Prénom` de l'auteur.
+
+Il faudra respecter notre architecture actuelle en passant par le `CatalogManager`.
+
+⚠️ Testez votre code et pensez à commiter.
+
 ## Glossaire des termes techniques
 ---
 
