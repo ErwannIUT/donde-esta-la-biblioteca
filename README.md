@@ -12,15 +12,6 @@ Pensez aussi à regarder les raccourcis utiles en bas de page.
 
 Créer un repository sur GitHub en privé que vous mettrez à jour pour garder vos sources.
 
-Pour m'envoyer votre TP, envoyez-moi un courriel avec pour objet : **[IUT] Nom Prénom 1 - Nom Prénom 2** en me précisant dans le corps la partie à laquelle vous vous êtes arrêtés. **N'utilisez pas vos adresses mail de l'IUT. Les mails sont parfois bloqués.**
-
-**Ajoutez-y un zip de votre solution que vous aurez préalablement nettoyé (ex : `Générer > Nettoyer la solution` ou `dotnet clean`. Cette procédure sert à retirer tous les fichiers compilés qui sont volumineux.**
-
-- Mail : erwann.fiolet@gmail.com
-- Discord : byabyakar
-
-## Les mots clefs
-
 - *Solution*
   - La racine de votre application .NET qui permet d'avoir la vision globale des projets
   - Manifestée sous la forme d'un fichier **.sln**, c'est ce fichier qu'il faut ouvrir pour ouvrir votre espace de travail
