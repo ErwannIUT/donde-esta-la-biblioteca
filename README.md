@@ -493,6 +493,8 @@ Après avoir fait évoluer votre `CatalogManager` en suivant l'exemple ci-dessus
     }
 ```
 
+Via le gestionnaire de package Nuget, ajouter le nuget **Microsoft.Extensions.Hosting** et ajouter les **using** nécessaire.
+
 Ajouter la méthode à votre méthode Main() :
 
 ```cs
