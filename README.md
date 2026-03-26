@@ -16,6 +16,8 @@ Pour me rendre le sujet, vous allez tous m'envoyer un mail ayant pour objet "**[
 
 Le GitHub étant en privé, il vous faudra aussi m'inviter en tant que contributeur sur votre projet.
 
+## Configuration d'un projet .NET
+
 - *Solution*
   - La racine de votre application .NET qui permet d'avoir la vision globale des projets
   - Manifestée sous la forme d'un fichier **.sln**, c'est ce fichier qu'il faut ouvrir pour ouvrir votre espace de travail
