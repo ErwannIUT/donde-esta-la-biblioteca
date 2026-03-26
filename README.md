@@ -815,16 +815,6 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class, IEnti
         _context = context;
         _dbSet = context.Set<T>();  // Set<T> : Accès générique à la table
     }
-
-    public IEnumerable<T> GetAll()
-    {
-        return _dbSet.ToList();
-    }
-
-    public T Get(int id)
-    {
-        return _dbSet.FirstOrDefault(e => e.Id == id);
-    }
     
     public T Add(T entity)
     {
@@ -857,6 +847,10 @@ services.AddTransient(typeof(IGenericRepository<>), typeof(GenericRepository<>))
 ```
 
 Supprimez vos anciens repositories.
+
+<span style="color:red">
+Supprimez les méthodes `GetAll()` et `GetById()` depuis votre GenericRepository et IGenericRepository, puis remplacez tous les appels à ces méthodes par la méthode `GetMultiple(...)`.
+</span>
 
 **Concepts EntityFramework importants :**
 - **DbSet<T>** : Représente une table
