@@ -848,9 +848,7 @@ services.AddTransient(typeof(IGenericRepository<>), typeof(GenericRepository<>))
 
 Supprimez vos anciens repositories.
 
-<span style="color:red">
-Supprimez les méthodes `GetAll()` et `GetById()` depuis votre GenericRepository et IGenericRepository, puis remplacez tous les appels à ces méthodes par la méthode `GetMultiple(...)`.
-</span>
+Supprimez les méthodes `GetAll()` et `GetById()` depuis votre `GenericRepository` et `IGenericRepository`, puis remplacez tous les appels à ces méthodes par la méthode `GetMultiple(...)`.
 
 **Concepts EntityFramework importants :**
 - **DbSet<T>** : Représente une table
