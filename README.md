@@ -12,7 +12,7 @@ Pensez aussi à regarder les raccourcis utiles en bas de page.
 
 Créer un repository sur GitHub en privé que vous mettrez à jour pour garder vos sources.
 
-Pour me rendre le sujet, vous allez tous m'envoyer un mail ayant pour objet "**[IUT] Nom Prénom 1 - Nom Prénom 2**" avec le lien de votre GitHub.
+Pour me rendre le sujet, vous allez tous m'envoyer un mail ayant pour objet "**[IUT] Nom Prénom 1 - Nom Prénom 2**" avec le lien de votre GitHub à `erwann.fiolet@gmail.com`.
 
 Le GitHub étant en privé, il vous faudra aussi m'inviter en tant que contributeur sur votre projet.
 
